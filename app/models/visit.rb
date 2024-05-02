@@ -5,7 +5,7 @@
 #  id         :integer          not null, primary key
 #  caption    :text
 #  photo      :string
-#  rating     :string
+#  rating     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  stop_id    :integer

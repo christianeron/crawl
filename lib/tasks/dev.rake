@@ -8,6 +8,7 @@ task({ :sample_data => :environment }) do
     Stop.destroy_all
     Category.destroy_all
     Bookmark.destroy_all
+    Visit.destroy_all
   end
 
   if Rails.env.production?
@@ -216,11 +217,28 @@ task({ :sample_data => :environment }) do
     end
   end
 
+  # Create visits
+  user = User.where(:username => usernames[0]).at(0)
+  crawls = Crawl.all
+
+  crawls.each do |a_crawl|
+    a_crawl.stops.each do |a_stop|
+      visit = Visit.new
+      visit.stop_id = a_stop.id
+      visit.user_id = user.id
+      visit.photo = Faker::Avatar.image
+      visit.caption = Faker::Restaurant.review
+      visit.rating = rand(1..5)
+      visit.save
+    end
+  end
+
   # Summary
   puts "There are now #{User.count} rows in the user table."
   puts "There are now #{Category.count} rows in the category table."
   puts "There are now #{Location.count} rows in the category table."
   puts "There are now #{Crawl.count} rows in the crawl table."
-  puts "There are now #{Stop.count} rows in the crawl table."
+  puts "There are now #{Stop.count} rows in the stop table."
   puts "There are now #{Bookmark.count} rows in the bookmark table."
+  puts "There are now #{Visit.count} rows in the visit table."
 end

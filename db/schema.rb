@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_02_151310) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_02_193251) do
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
     t.integer "crawl_id"
@@ -64,9 +64,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_151310) do
     t.integer "crawl_id"
     t.integer "order_number"
     t.integer "location_id"
-    t.text "menu_recommendation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "recommendation"
   end
 
   create_table "tags", force: :cascade do |t|

@@ -2,13 +2,13 @@
 #
 # Table name: stops
 #
-#  id                  :integer          not null, primary key
-#  menu_recommendation :text
-#  order_number        :integer
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  crawl_id            :integer
-#  location_id         :integer
+#  id             :integer          not null, primary key
+#  order_number   :integer
+#  recommendation :text
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  crawl_id       :integer
+#  location_id    :integer
 #
 class Stop < ApplicationRecord
     # Validations

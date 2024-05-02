@@ -8,7 +8,9 @@
 #  updated_at :datetime         not null
 #
 class Category < ApplicationRecord
-  
+    # Validations
+    validates(:name, presence:true)
+
   # Direct associations
   has_many  :tours, class_name: "Crawl", foreign_key: "category_id", dependent: :destroy
   

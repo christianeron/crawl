@@ -12,6 +12,10 @@
 #  user_id    :integer
 #
 class Visit < ApplicationRecord
+  # Validations
+  validates(:photo, presence:true)
+  validates(:caption, presence:true)
+  validates(:rating, presence:true)
   
   # Direct associations
   belongs_to :user, required: true, class_name: "User", foreign_key: "user_id"

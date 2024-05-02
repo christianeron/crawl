@@ -11,7 +11,9 @@
 #  location_id         :integer
 #
 class Stop < ApplicationRecord
-  
+    # Validations
+    validates(:order_number, presence:true)
+
   # Direct associations
   belongs_to :crawl, required: true, class_name: "Crawl", foreign_key: "crawl_id"
 

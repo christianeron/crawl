@@ -13,7 +13,13 @@
 #  updated_at       :datetime         not null
 #
 class Location < ApplicationRecord
-  
+  # Validations
+  validates(:name, presence:true)
+  validates(:city, presence:true)
+  validates(:state, presence:true)
+  validates(:street_address, presence:true)
+  validates(:zip_code, presence:true)
+
   # Direct associations
   has_many  :stops, class_name: "Stop", foreign_key: "location_id", dependent: :destroy
 

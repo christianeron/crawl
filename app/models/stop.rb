@@ -11,4 +11,16 @@
 #  location_id         :integer
 #
 class Stop < ApplicationRecord
+  
+  # Direct associations
+  belongs_to :crawl, required: true, class_name: "Crawl", foreign_key: "crawl_id"
+
+  has_many  :stop_comments, class_name: "StopComment", foreign_key: "stop_id", dependent: :destroy
+
+  has_many  :visits, class_name: "Visit", foreign_key: "stop_id", dependent: :destroy
+
+  belongs_to :location, required: true, class_name: "Location", foreign_key: "location_id"
+  
+  # Indirect associations
+  
 end

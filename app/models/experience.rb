@@ -8,4 +8,11 @@
 #  updated_at :datetime         not null
 #
 class Experience < ApplicationRecord
+  
+  # Direct associations
+  has_many  :tags, class_name: "Tag", foreign_key: "experience_id", dependent: :destroy
+
+  # Indirect associations
+  has_many :crawls, through: :tags, source: :crawl
+  
 end

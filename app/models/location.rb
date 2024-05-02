@@ -13,4 +13,10 @@
 #  updated_at       :datetime         not null
 #
 class Location < ApplicationRecord
+  
+  # Direct associations
+  has_many  :stops, class_name: "Stop", foreign_key: "location_id", dependent: :destroy
+
+  # Indirect associations
+
 end

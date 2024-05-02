@@ -22,4 +22,18 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  # Direct associations
+  has_many  :bookmarks, class_name: "Bookmark", foreign_key: "user_id", dependent: :destroy
+
+  has_many  :stop_comments, class_name: "StopComment", foreign_key: "user_id", dependent: :destroy
+
+  has_many  :visit_comments, class_name: "VisitComment", foreign_key: "user_id", dependent: :destroy
+
+  has_many  :visits, class_name: "Visit", foreign_key: "user_id", dependent: :destroy
+
+  has_many  :crawls, class_name: "Crawl", foreign_key: "user_id", dependent: :destroy
+
+  # Indirect associations
+  
 end

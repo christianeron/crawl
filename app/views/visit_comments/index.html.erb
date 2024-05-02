@@ -1,0 +1,118 @@
+<div>
+  <div>
+    <h1>
+      List of all visit comments
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new visit comment
+    </h2>
+
+    <form action="/insert_visit_comment" method="post">
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <div>
+        <label for="visit_id_box">
+          Visit
+        </label>
+
+        <input type="text" id="visit_id_box" name="query_visit_id">
+      </div>
+
+      <div>
+        <label for="comment_box">
+          Comment
+        </label>
+
+        <textarea id="comment_box" name="query_comment" rows="3"></textarea>
+      </div>
+
+      <button>
+        Create visit comment
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Visit
+        </th>
+
+        <th>
+          Comment
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_visit_comments.each do |a_visit_comment| %>
+      <tr>
+        <td>
+          <%= a_visit_comment.id %>
+        </td>
+
+        <td>
+          <%= a_visit_comment.user_id %>
+        </td>
+
+        <td>
+          <%= a_visit_comment.visit_id %>
+        </td>
+
+        <td>
+          <%= a_visit_comment.comment %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_visit_comment.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_visit_comment.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/visit_comments/<%= a_visit_comment.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

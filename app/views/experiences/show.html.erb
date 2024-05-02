@@ -1,0 +1,71 @@
+<div>
+  <div>
+    <h1>
+      Experience #<%= @the_experience.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/experiences">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_experience/<%= @the_experience.id %>">
+          Delete experience
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Name
+      </dt>
+      <dd>
+        <%= @the_experience.name %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_experience.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_experience.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit experience
+    </h2>
+
+    <form action="/modify_experience/<%= @the_experience.id %>"  method="post" >
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" value="<%= @the_experience.name %>">
+      </div>
+
+      <button>
+        Update experience
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

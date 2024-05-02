@@ -1,0 +1,146 @@
+<div>
+  <div>
+    <h1>
+      Location #<%= @the_location.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/locations">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_location/<%= @the_location.id %>">
+          Delete location
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Name
+      </dt>
+      <dd>
+        <%= @the_location.name %>
+      </dd>
+
+      <dt>
+        Street address
+      </dt>
+      <dd>
+        <%= @the_location.street_address %>
+      </dd>
+
+      <dt>
+        Street address 2
+      </dt>
+      <dd>
+        <%= @the_location.street_address_2 %>
+      </dd>
+
+      <dt>
+        City
+      </dt>
+      <dd>
+        <%= @the_location.city %>
+      </dd>
+
+      <dt>
+        State
+      </dt>
+      <dd>
+        <%= @the_location.state %>
+      </dd>
+
+      <dt>
+        Zip code
+      </dt>
+      <dd>
+        <%= @the_location.zip_code %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_location.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_location.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit location
+    </h2>
+
+    <form action="/modify_location/<%= @the_location.id %>"  method="post" >
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" value="<%= @the_location.name %>">
+      </div>
+
+      <div>
+        <label for="street_address_box">
+          Street address
+        </label>
+
+        <input type="text" id="street_address_box" name="query_street_address" value="<%= @the_location.street_address %>">
+      </div>
+
+      <div>
+        <label for="street_address_2_box">
+          Street address 2
+        </label>
+
+        <input type="text" id="street_address_2_box" name="query_street_address_2" value="<%= @the_location.street_address_2 %>">
+      </div>
+
+      <div>
+        <label for="city_box">
+          City
+        </label>
+
+        <input type="text" id="city_box" name="query_city" value="<%= @the_location.city %>">
+      </div>
+
+      <div>
+        <label for="state_box">
+          State
+        </label>
+
+        <input type="text" id="state_box" name="query_state" value="<%= @the_location.state %>">
+      </div>
+
+      <div>
+        <label for="zip_code_box">
+          Zip code
+        </label>
+
+        <input type="text" id="zip_code_box" name="query_zip_code" value="<%= @the_location.zip_code %>">
+      </div>
+
+      <button>
+        Update location
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

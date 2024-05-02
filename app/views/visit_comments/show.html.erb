@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Visit comment #<%= @the_visit_comment.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/visit_comments">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_visit_comment/<%= @the_visit_comment.id %>">
+          Delete visit comment
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_visit_comment.user_id %>
+      </dd>
+
+      <dt>
+        Visit
+      </dt>
+      <dd>
+        <%= @the_visit_comment.visit_id %>
+      </dd>
+
+      <dt>
+        Comment
+      </dt>
+      <dd>
+        <%= @the_visit_comment.comment %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_visit_comment.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_visit_comment.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit visit comment
+    </h2>
+
+    <form action="/modify_visit_comment/<%= @the_visit_comment.id %>"  method="post" >
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_visit_comment.user_id %>">
+      </div>
+
+      <div>
+        <label for="visit_id_box">
+          Visit
+        </label>
+
+        <input type="text" id="visit_id_box" name="query_visit_id" value="<%= @the_visit_comment.visit_id %>">
+      </div>
+
+      <div>
+        <label for="comment_box">
+          Comment
+        </label>
+
+        <textarea id="comment_box" name="query_comment"><%= @the_visit_comment.comment %></textarea>
+      </div>
+
+      <button>
+        Update visit comment
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

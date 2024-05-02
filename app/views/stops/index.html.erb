@@ -1,0 +1,134 @@
+<div>
+  <div>
+    <h1>
+      List of all stops
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new stop
+    </h2>
+
+    <form action="/insert_stop" method="post">
+      <div>
+        <label for="crawl_id_box">
+          Crawl
+        </label>
+
+        <input type="text" id="crawl_id_box" name="query_crawl_id">
+      </div>
+
+      <div>
+        <label for="order_number_box">
+          Order number
+        </label>
+
+        <input type="text" id="order_number_box" name="query_order_number">
+      </div>
+
+      <div>
+        <label for="location_id_box">
+          Location
+        </label>
+
+        <input type="text" id="location_id_box" name="query_location_id">
+      </div>
+
+      <div>
+        <label for="menu_recommendation_box">
+          Menu recommendation
+        </label>
+
+        <textarea id="menu_recommendation_box" name="query_menu_recommendation" rows="3"></textarea>
+      </div>
+
+      <button>
+        Create stop
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Crawl
+        </th>
+
+        <th>
+          Order number
+        </th>
+
+        <th>
+          Location
+        </th>
+
+        <th>
+          Menu recommendation
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_stops.each do |a_stop| %>
+      <tr>
+        <td>
+          <%= a_stop.id %>
+        </td>
+
+        <td>
+          <%= a_stop.crawl_id %>
+        </td>
+
+        <td>
+          <%= a_stop.order_number %>
+        </td>
+
+        <td>
+          <%= a_stop.location_id %>
+        </td>
+
+        <td>
+          <%= a_stop.menu_recommendation %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_stop.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_stop.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/stops/<%= a_stop.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

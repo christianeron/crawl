@@ -1,0 +1,116 @@
+<div>
+  <div>
+    <h1>
+      Stop #<%= @the_stop.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/stops">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_stop/<%= @the_stop.id %>">
+          Delete stop
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Crawl
+      </dt>
+      <dd>
+        <%= @the_stop.crawl_id %>
+      </dd>
+
+      <dt>
+        Order number
+      </dt>
+      <dd>
+        <%= @the_stop.order_number %>
+      </dd>
+
+      <dt>
+        Location
+      </dt>
+      <dd>
+        <%= @the_stop.location_id %>
+      </dd>
+
+      <dt>
+        Menu recommendation
+      </dt>
+      <dd>
+        <%= @the_stop.menu_recommendation %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_stop.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_stop.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit stop
+    </h2>
+
+    <form action="/modify_stop/<%= @the_stop.id %>"  method="post" >
+      <div>
+        <label for="crawl_id_box">
+          Crawl
+        </label>
+
+        <input type="text" id="crawl_id_box" name="query_crawl_id" value="<%= @the_stop.crawl_id %>">
+      </div>
+
+      <div>
+        <label for="order_number_box">
+          Order number
+        </label>
+
+        <input type="text" id="order_number_box" name="query_order_number" value="<%= @the_stop.order_number %>">
+      </div>
+
+      <div>
+        <label for="location_id_box">
+          Location
+        </label>
+
+        <input type="text" id="location_id_box" name="query_location_id" value="<%= @the_stop.location_id %>">
+      </div>
+
+      <div>
+        <label for="menu_recommendation_box">
+          Menu recommendation
+        </label>
+
+        <textarea id="menu_recommendation_box" name="query_menu_recommendation"><%= @the_stop.menu_recommendation %></textarea>
+      </div>
+
+      <button>
+        Update stop
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

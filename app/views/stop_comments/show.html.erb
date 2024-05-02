@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Stop comment #<%= @the_stop_comment.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/stop_comments">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_stop_comment/<%= @the_stop_comment.id %>">
+          Delete stop comment
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Stop
+      </dt>
+      <dd>
+        <%= @the_stop_comment.stop_id %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_stop_comment.user_id %>
+      </dd>
+
+      <dt>
+        Comment
+      </dt>
+      <dd>
+        <%= @the_stop_comment.comment %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_stop_comment.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_stop_comment.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit stop comment
+    </h2>
+
+    <form action="/modify_stop_comment/<%= @the_stop_comment.id %>"  method="post" >
+      <div>
+        <label for="stop_id_box">
+          Stop
+        </label>
+
+        <input type="text" id="stop_id_box" name="query_stop_id" value="<%= @the_stop_comment.stop_id %>">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_stop_comment.user_id %>">
+      </div>
+
+      <div>
+        <label for="comment_box">
+          Comment
+        </label>
+
+        <textarea id="comment_box" name="query_comment"><%= @the_stop_comment.comment %></textarea>
+      </div>
+
+      <button>
+        Update stop comment
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

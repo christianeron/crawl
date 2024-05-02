@@ -1,0 +1,86 @@
+<div>
+  <div>
+    <h1>
+      List of all experiences
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new experience
+    </h2>
+
+    <form action="/insert_experience" method="post">
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name">
+      </div>
+
+      <button>
+        Create experience
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Name
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_experiences.each do |an_experience| %>
+      <tr>
+        <td>
+          <%= an_experience.id %>
+        </td>
+
+        <td>
+          <%= an_experience.name %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(an_experience.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(an_experience.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/experiences/<%= an_experience.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

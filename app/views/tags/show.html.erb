@@ -1,0 +1,86 @@
+<div>
+  <div>
+    <h1>
+      Tag #<%= @the_tag.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/tags">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_tag/<%= @the_tag.id %>">
+          Delete tag
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Crawl
+      </dt>
+      <dd>
+        <%= @the_tag.crawl_id %>
+      </dd>
+
+      <dt>
+        Experience
+      </dt>
+      <dd>
+        <%= @the_tag.experience_id %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_tag.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_tag.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit tag
+    </h2>
+
+    <form action="/modify_tag/<%= @the_tag.id %>"  method="post" >
+      <div>
+        <label for="crawl_id_box">
+          Crawl
+        </label>
+
+        <input type="text" id="crawl_id_box" name="query_crawl_id" value="<%= @the_tag.crawl_id %>">
+      </div>
+
+      <div>
+        <label for="experience_id_box">
+          Experience
+        </label>
+
+        <input type="text" id="experience_id_box" name="query_experience_id" value="<%= @the_tag.experience_id %>">
+      </div>
+
+      <button>
+        Update tag
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

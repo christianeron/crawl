@@ -1,0 +1,131 @@
+<div>
+  <div>
+    <h1>
+      Visit #<%= @the_visit.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/visits">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_visit/<%= @the_visit.id %>">
+          Delete visit
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_visit.user_id %>
+      </dd>
+
+      <dt>
+        Stop
+      </dt>
+      <dd>
+        <%= @the_visit.stop_id %>
+      </dd>
+
+      <dt>
+        Rating
+      </dt>
+      <dd>
+        <%= @the_visit.rating %>
+      </dd>
+
+      <dt>
+        Caption
+      </dt>
+      <dd>
+        <%= @the_visit.caption %>
+      </dd>
+
+      <dt>
+        Photo
+      </dt>
+      <dd>
+        <%= @the_visit.photo %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_visit.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_visit.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit visit
+    </h2>
+
+    <form action="/modify_visit/<%= @the_visit.id %>"  method="post" >
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_visit.user_id %>">
+      </div>
+
+      <div>
+        <label for="stop_id_box">
+          Stop
+        </label>
+
+        <input type="text" id="stop_id_box" name="query_stop_id" value="<%= @the_visit.stop_id %>">
+      </div>
+
+      <div>
+        <label for="rating_box">
+          Rating
+        </label>
+
+        <input type="text" id="rating_box" name="query_rating" value="<%= @the_visit.rating %>">
+      </div>
+
+      <div>
+        <label for="caption_box">
+          Caption
+        </label>
+
+        <textarea id="caption_box" name="query_caption"><%= @the_visit.caption %></textarea>
+      </div>
+
+      <div>
+        <label for="photo_box">
+          Photo
+        </label>
+
+        <input type="text" id="photo_box" name="query_photo" value="<%= @the_visit.photo %>">
+      </div>
+
+      <button>
+        Update visit
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

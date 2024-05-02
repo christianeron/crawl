@@ -1,0 +1,118 @@
+<div>
+  <div>
+    <h1>
+      List of all stop comments
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new stop comment
+    </h2>
+
+    <form action="/insert_stop_comment" method="post">
+      <div>
+        <label for="stop_id_box">
+          Stop
+        </label>
+
+        <input type="text" id="stop_id_box" name="query_stop_id">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <div>
+        <label for="comment_box">
+          Comment
+        </label>
+
+        <textarea id="comment_box" name="query_comment" rows="3"></textarea>
+      </div>
+
+      <button>
+        Create stop comment
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Stop
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Comment
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_stop_comments.each do |a_stop_comment| %>
+      <tr>
+        <td>
+          <%= a_stop_comment.id %>
+        </td>
+
+        <td>
+          <%= a_stop_comment.stop_id %>
+        </td>
+
+        <td>
+          <%= a_stop_comment.user_id %>
+        </td>
+
+        <td>
+          <%= a_stop_comment.comment %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_stop_comment.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_stop_comment.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/stop_comments/<%= a_stop_comment.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

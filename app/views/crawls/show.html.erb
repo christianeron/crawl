@@ -1,8 +1,10 @@
 <div>
   <div>
-    <h1>
-      Crawl #<%= @the_crawl.id %> details
-    </h1>
+    <h1><%= @the_crawl.name %></h1>
+
+    <h2>(<%= @the_crawl.category.name %> in <%= @the_crawl.city %>, <%= @the_crawl.state %>) by <%= @the_crawl.user.username %></h2>
+
+    <hr>
 
     <div>
       <div>
@@ -18,56 +20,35 @@
       </div>
     </div>
 
-    <dl>
-      <dt>
-        Name
-      </dt>
-      <dd>
-        <%= @the_crawl.name %>
-      </dd>
+    <hr>
 
-      <dt>
-        Category
-      </dt>
-      <dd>
-        <%= @the_crawl.category_id %>
-      </dd>
 
-      <dt>
-        City
-      </dt>
-      <dd>
-        <%= @the_crawl.city %>
-      </dd>
+    <div>
+      <%the_stops = @the_crawl.stops %>
+      <%the_stops.each do |a_stop|%>
+        <h2>Stop #<%= a_stop.order_number %></h2>
+          <dl>
+            <dt>
+              Recommendation
+            </dt>
+            <dd>
+              <%= a_stop.recommendation %>
+            </dd>
 
-      <dt>
-        State
-      </dt>
-      <dd>
-        <%= @the_crawl.state %>
-      </dd>
-
-      <dt>
-        User
-      </dt>
-      <dd>
-        <%= @the_crawl.user_id %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_crawl.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_crawl.updated_at) %> ago
-      </dd>
-    </dl>
+            <% the_visits = a_stop.visits %>
+            <% the_visits.each do |a_visit|%>
+            <dt>
+              Visit 
+            </dt>
+            <dd>
+              <img src="<%= a_visit.photo %>">
+              <p><%= a_visit.caption %></p>
+            </dd>
+            <% end %>
+          </dl>
+      <% end %>
+    </div>
+    
   </div>
 </div>
 

@@ -1,0 +1,202 @@
+<div>
+  <div>
+    <h1>
+      My crawls
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Owned crawls
+    </h2>
+
+    <% if current_user == nil%>
+
+    Must be <a href="/users/sign_in">signed in</a> to view your crawls.
+
+    <% else %>    
+
+    <hr>
+    <div>
+      <div>
+        <table border="1">
+          <tr>
+            <th>
+              ID
+            </th>
+
+            <th>
+              Name
+            </th>
+
+            <th>
+              Category
+            </th>
+
+            <th>
+              City
+            </th>
+
+            <th>
+              User
+            </th>
+
+            <th>
+              Created at
+            </th>
+
+            <th>
+              Updated at
+            </th>
+
+            <th>
+            </th>
+          </tr>
+
+          <% my_crawls = Crawl.where(:user_id => current_user.id) %>
+          <% my_crawls.each do |a_crawl| %>
+          <tr>
+            <td>
+              <%= a_crawl.id %>
+            </td>
+
+            <td>
+              <%= a_crawl.name %>
+            </td>
+
+            <td>
+              <%= a_crawl.category.name %>
+            </td>
+
+            <td>
+              <%= a_crawl.city %>, <%= a_crawl.state %>
+            </td>
+
+            <td>
+              <%= a_crawl.user.username %>
+            </td>
+
+            <td>
+              <%= time_ago_in_words(a_crawl.created_at) %> ago
+            </td>
+            <td>
+              <%= time_ago_in_words(a_crawl.updated_at) %> ago
+            </td>
+
+            <td>
+              <a href="/crawls/<%= a_crawl.id %>">
+                Show details
+              </a>
+            </td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+
+    <% end %>
+
+  </div>
+</div>
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Bookmarked crawls
+    </h2>
+
+      <% if current_user == nil%>
+
+      Must be <a href="/users/sign_in">signed in</a> to view your bookmarked crawls.
+
+      <% else %>    
+
+      <hr>
+      <div>
+        <div>
+          <table border="1">
+            <tr>
+              <th>
+                ID
+              </th>
+
+              <th>
+                Name
+              </th>
+
+              <th>
+                Category
+              </th>
+
+              <th>
+                City
+              </th>
+
+              <th>
+                User
+              </th>
+
+              <th>
+                Created at
+              </th>
+
+              <th>
+                Updated at
+              </th>
+
+              <th>
+              </th>
+            </tr>
+
+            <% followed_crawls = User.where(:id => current_user.id).at(0).bookmarked_crawls %>
+            <% followed_crawls.each do |a_crawl| %>
+            <tr>
+              <td>
+                <%= a_crawl.id %>
+              </td>
+
+              <td>
+                <%= a_crawl.name %>
+              </td>
+
+              <td>
+                <%= a_crawl.category.name %>
+              </td>
+
+              <td>
+                <%= a_crawl.city %>, <%= a_crawl.state %>
+              </td>
+
+              <td>
+                <%= a_crawl.user.username %>
+              </td>
+
+              <td>
+                <%= time_ago_in_words(a_crawl.created_at) %> ago
+              </td>
+              <td>
+                <%= time_ago_in_words(a_crawl.updated_at) %> ago
+              </td>
+
+              <td>
+                <a href="/crawls/<%= a_crawl.id %>">
+                  Show details
+                </a>
+              </td>
+            </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+
+      <% end %> 
+  </div>
+</div>
+
+<hr>

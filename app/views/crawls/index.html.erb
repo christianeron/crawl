@@ -14,6 +14,12 @@
       Add a new crawl
     </h2>
 
+<% if current_user == nil%>
+
+Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
+
+<% else %>    
+
     <form action="/insert_crawl" method="post">
       <div>
         <label for="name_box">
@@ -47,12 +53,7 @@
         <input type="text" id="state_box" name="query_state">
       </div>
 
-      <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id">
+        <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
       </div>
 
       <button>
@@ -61,6 +62,9 @@
     </form>
   </div>
 </div>
+
+<% end %>    
+
 
 <hr>
 <div>
@@ -81,10 +85,6 @@
 
         <th>
           City
-        </th>
-
-        <th>
-          State
         </th>
 
         <th>
@@ -114,19 +114,15 @@
         </td>
 
         <td>
-          <%= a_crawl.category_id %>
+          <%= a_crawl.category.name %>
         </td>
 
         <td>
-          <%= a_crawl.city %>
+          <%= a_crawl.city %>, <%= a_crawl.state %>
         </td>
 
         <td>
-          <%= a_crawl.state %>
-        </td>
-
-        <td>
-          <%= a_crawl.user_id %>
+          <%= a_crawl.user.username %>
         </td>
 
         <td>

@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Routes for current user
+  get("/my_crawls", { :controller => "crawls", :action => "my_crawls" })
+  
+  
   # Routes for the Category resource:
 
   # CREATE
@@ -180,6 +184,7 @@ Rails.application.routes.draw do
   get("/crawls", { :controller => "crawls", :action => "index" })
   
   get("/crawls/:path_id", { :controller => "crawls", :action => "show" })
+  
   
   # UPDATE
   

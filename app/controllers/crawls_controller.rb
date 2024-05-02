@@ -59,4 +59,11 @@ class CrawlsController < ApplicationController
 
     redirect_to("/crawls", { :notice => "Crawl deleted successfully."} )
   end
+
+  def my_crawls
+
+    render({ :template => "crawls/my_crawls" })
+  end
+
+
 end

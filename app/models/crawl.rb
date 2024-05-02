@@ -3,8 +3,8 @@
 # Table name: crawls
 #
 #  id          :integer          not null, primary key
-#  city        :string
 #  name        :string
+#  city        :string
 #  state       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -31,4 +31,5 @@ class Crawl < ApplicationRecord
   # Indirect associations
   has_many :experiences, through: :tags, source: :experience
 
+  has_many :following_users, through: :bookmarks, source: :user
 end

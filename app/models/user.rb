@@ -35,5 +35,6 @@ class User < ApplicationRecord
   has_many  :crawls, class_name: "Crawl", foreign_key: "user_id", dependent: :destroy
 
   # Indirect associations
+  has_many :bookmarked_crawls, through: :bookmarks, source: :crawl
   
 end

@@ -237,7 +237,7 @@ task({ :sample_data => :environment }) do
   visits.each do |a_visit|
     3.times do
       visit_comment = VisitComment.new
-      visit_comment.user_id = User.where.not(:id => a_visit.user.id).sample(1).id
+      visit_comment.user_id = User.where.not(:id => a_visit.user.id).sample(1).at(0).id
       visit_comment.visit_id = a_visit.id
       visit_comment.comment = Faker::Movies::PrincessBride.quote
       visit_comment.save

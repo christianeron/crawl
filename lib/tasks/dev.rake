@@ -5,6 +5,7 @@ task({ :sample_data => :environment }) do
     User.destroy_all
     Crawl.destroy_all
     Category.destroy_all
+    Bookmark.destroy_all 
   end
 
   if Rails.env.production?
@@ -37,22 +38,38 @@ task({ :sample_data => :environment }) do
   locations = locations.push(["New York","NY"])
   locations = locations.push(["Denver","CO"])
 
-  locations.each do |this_city, this_state|
-    categories.each do |category_name|
-      crawl = Crawl.new
-      crawl.name = Faker::Food.dish
-      crawl.city = this_city
-      crawl.state = this_state
-      crawl.user_id = User.all.sample.id
-      crawl.category_id = Category.all.where(:name => category_name).at(0).id
-      crawl.save
-    end
-  end
+    # Chicago - Food
+    crawl = Crawl.new
+    crawl.name = "Deep Dish Pizza"
+    crawl.city = "Chicago"
+    crawl.state = "IL"
+    crawl.user_id = User.all.sample.id
+    crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
+    crawl.save
+
+    # Chicago - Food
+    crawl = Crawl.new
+    crawl.name = "French Fries"
+    crawl.city = "Chicago"
+    crawl.state = "IL"
+    crawl.user_id = User.all.sample.id
+    crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
+    crawl.save
+
+    # Chicago - Art
+    crawl = Crawl.new
+    crawl.name = "Sculptures and Statues"
+    crawl.city = "Chicago"
+    crawl.state = "IL"
+    crawl.user_id = User.all.sample.id
+    crawl.category_id = Category.all.where(:name => categories[1]).at(0).id
+    crawl.save
+
 
   # Create bookmarks
   usernames.each do |username|
     user = User.where(:username => username).at(0)
-    sample_crawls = Crawl.where.not(:user_id => user.id).sample(2)
+    sample_crawls = Crawl.where.not(:user_id => user.id).sample(1)
     sample_crawls.each do |crawl|
       bookmark = Bookmark.new
       bookmark.user_id = user.id

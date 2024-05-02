@@ -1,0 +1,150 @@
+<div>
+  <div>
+    <h1>
+      List of all crawls
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new crawl
+    </h2>
+
+    <form action="/insert_crawl" method="post">
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name">
+      </div>
+
+      <div>
+        <label for="category_id_box">
+          Category
+        </label>
+
+        <input type="text" id="category_id_box" name="query_category_id">
+      </div>
+
+      <div>
+        <label for="city_box">
+          City
+        </label>
+
+        <input type="text" id="city_box" name="query_city">
+      </div>
+
+      <div>
+        <label for="state_box">
+          State
+        </label>
+
+        <input type="text" id="state_box" name="query_state">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <button>
+        Create crawl
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Name
+        </th>
+
+        <th>
+          Category
+        </th>
+
+        <th>
+          City
+        </th>
+
+        <th>
+          State
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_crawls.each do |a_crawl| %>
+      <tr>
+        <td>
+          <%= a_crawl.id %>
+        </td>
+
+        <td>
+          <%= a_crawl.name %>
+        </td>
+
+        <td>
+          <%= a_crawl.category_id %>
+        </td>
+
+        <td>
+          <%= a_crawl.city %>
+        </td>
+
+        <td>
+          <%= a_crawl.state %>
+        </td>
+
+        <td>
+          <%= a_crawl.user_id %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_crawl.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_crawl.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/crawls/<%= a_crawl.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

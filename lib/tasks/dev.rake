@@ -204,7 +204,6 @@ task({ :sample_data => :environment }) do
       stop.recommendation = "Designed by American artist Alexander Calder, Flamingo is a striking red sculpture located in the Federal Plaza in the heart of the Loop. Its vibrant color and abstract form make it a prominent feature of the city's skyline."
       stop.save
 
-
   # Create bookmarks
   usernames.each do |username|
     user = User.where(:username => username).at(0)
@@ -233,6 +232,20 @@ task({ :sample_data => :environment }) do
     end
   end
 
+  # Create visit comments
+  visits = Visit.all
+  visits.each do |a_visit|
+    3.times do
+      visit_comment = VisitComment.new
+      visit_comment.user_id = User.where.not(:id => a_visit.user.id).sample(1).id
+      visit_comment.visit_id = a_visit.id
+      visit_comment.comment = Faker::Movies::PrincessBride.quote
+      visit_comment.save
+
+    end
+  end
+
+
   # Summary
   puts "There are now #{User.count} rows in the user table."
   puts "There are now #{Category.count} rows in the category table."
@@ -241,4 +254,6 @@ task({ :sample_data => :environment }) do
   puts "There are now #{Stop.count} rows in the stop table."
   puts "There are now #{Bookmark.count} rows in the bookmark table."
   puts "There are now #{Visit.count} rows in the visit table."
+  puts "There are now #{VisitComment.count} rows in the visit comment table."
+  puts "There are now #{StopComment.count} rows in the stop comment table."
 end

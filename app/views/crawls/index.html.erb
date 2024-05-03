@@ -53,6 +53,15 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
         <input type="text" id="state_box" name="query_state">
       </div>
 
+      <div>
+        <label for="photo_box">
+          Photo url
+        </label>
+
+        <input type="text" id="photo_box" name="query_photo">
+      </div>
+
+      <div>
         <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
       </div>
 
@@ -81,6 +90,10 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 
         <th>
           Category
+        </th>
+
+        <th>
+          Photo
         </th>
 
         <th>
@@ -115,6 +128,10 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 
         <td>
           <%= a_crawl.category.name %>
+        </td>
+
+        <td>
+          <img src="<%= a_crawl.photo %>">
         </td>
 
         <td>

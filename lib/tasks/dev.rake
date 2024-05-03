@@ -26,7 +26,7 @@ task({ :sample_data => :environment }) do
   end
 
   # Create users
-  usernames = ["alice","bob","carol","dave","eve"]
+  usernames = ["alice","bob","carol","dave","eve","frank","grace","heidi","ivan","judy","mallory","nancy","olivia","peter"]
     usernames.each do |username|
       user = User.new
       user.email = "#{username}@example.com"
@@ -37,78 +37,26 @@ task({ :sample_data => :environment }) do
 
 
   # Create locations
+    locations = Array.new
+    locations = locations.push({:name => "Lou Malnati's Pizzeria", :city => "Lincolnwood", :state => "IL", :street_address => "6649 N Lincoln Ave", :zip_code => "60712"})
+    locations = locations.push({:name => "Pequod's Pizza", :city => "Morton Grove", :state => "IL", :street_address => "8520 Fernald Ave", :zip_code => "60053"})
+    locations = locations.push({:name => "Burt's Place", :city => "Morton Grove", :state => "IL", :street_address => "8541 Ferris Ave", :zip_code => "60053"})
+    locations = locations.push({:name => "Small Cheval", :city => "Chicago", :state => "IL", :street_address => "1732 N Milwaukee Ave", :zip_code => "60647"})
+    locations = locations.push({:name => "Parson's Chicken & Fish", :city => "Chicago", :state => "IL", :street_address => "2952 W Armitage Ave", :zip_code => "60647"})
+    locations = locations.push({:name => "Scofflaw", :city => "Chicago", :state => "IL", :street_address => "3201 W Armitage Ave", :zip_code => "60647"})
+    locations = locations.push({:name => "Cloud Gate (The Bean)", :city => "Chicago", :state => "IL", :street_address => "Millennium Park, 201 E Randolph St", :zip_code => "60602"})
+    locations = locations.push({:name => "The Chicago Picasso", :city => "Chicago", :state => "IL", :street_address => "Daley Plaza, 50 W Washington St", :zip_code => "60602"})
+    locations = locations.push({:name => "Flamingo", :city => "Chicago", :state => "IL", :street_address => "Federal Plaza, 50 W Adams St", :zip_code => "60603"})
 
-    location = Location.new
-    location.name = "Lou Malnati's Pizzeria"
-    location.city = "Lincolnwood"
-    location.state = "IL"
-    location.street_address = "6649 N Lincoln Ave"
-    location.zip_code = "60712"
-    location.save
-
-    location = Location.new
-    location.name = "Pequod's Pizza"
-    location.city = "Morton Grove"
-    location.state = "IL"
-    location.street_address = "8520 Fernald Ave"
-    location.zip_code = "60053"
-    location.save
-
-    location = Location.new
-    location.name = "Burt's Place"
-    location.city = "Morton Grove"
-    location.state = "IL"
-    location.street_address = "8541 Ferris Ave"
-    location.zip_code = "60053"
-    location.save
-
-    location = Location.new
-    location.name = "Small Cheval"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "1732 N Milwaukee Ave"
-    location.zip_code = "60647"
-    location.save
-
-    location = Location.new
-    location.name = "Parson's Chicken & Fish"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "2952 W Armitage Ave"
-    location.zip_code = "60647"
-    location.save
-
-    location = Location.new
-    location.name = "Scofflaw"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "3201 W Armitage Ave"
-    location.zip_code = "60647"
-    location.save
-
-    location = Location.new
-    location.name = "Cloud Gate (The Bean)"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "Millennium Park, 201 E Randolph St"
-    location.zip_code = "60602"
-    location.save
-
-    location = Location.new
-    location.name = "The Chicago Picasso"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "Daley Plaza, 50 W Washington St"
-    location.zip_code = "60602"
-    location.save
-
-    location = Location.new
-    location.name = "Flamingo"
-    location.city = "Chicago"
-    location.state = "IL"
-    location.street_address = "Federal Plaza, 50 W Adams St"
-    location.zip_code = "60603"
-    location.save
+    locations.each do |a_location|
+      location = Location.new
+      location.name = a_location.fetch(:name)
+      location.city = a_location.fetch(:city)
+      location.state = a_location.fetch(:state)
+      location.street_address = a_location.fetch(:street_address)
+      location.zip_code = a_location.fetch(:zip_code)
+      location.save
+    end
 
   # Create crawls and stops
     # Chicago - Food
@@ -118,6 +66,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
+    crawl.photo = "https://images.unsplash.com/photo-1582476927499-65372fb1a458?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpY2FnbyUyMHBpenphfGVufDB8fDB8fHwy"
     crawl.save
 
       #Stops
@@ -149,6 +98,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
+    crawl.photo = "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZnJlbmNoJTIwZnJpZXN8ZW58MHx8MHx8fDI%3D"
     crawl.save
 
       #Stops
@@ -180,6 +130,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[1]).at(0).id
+    crawl.photo = "https://images.unsplash.com/photo-1616624446421-b6a136da737d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpY2FnbyUyMGJlYW58ZW58MHx8MHx8fDI%3D"
     crawl.save
 
       #Stops
@@ -220,14 +171,65 @@ task({ :sample_data => :environment }) do
   user = User.where(:username => usernames[0]).at(0)
   crawls = Crawl.all
 
+  positive_comments = [
+    "Absolutely delicious! Every bite was a burst of flavor.",
+    "Mouthwatering dishes that left me craving more.",
+    "Fantastic food, great atmosphere, and excellent service!",
+    "The presentation was stunning, and the taste matched it perfectly.",
+    "Incredible flavors that danced on my palate.",
+    "Fresh ingredients and impeccable seasoning made for an unforgettable meal.",
+    "A culinary masterpiece from start to finish.",
+    "Every dish was a delightful surprise!",
+    "I couldn't get enough of their amazing cuisine.",
+    "The perfect balance of textures and flavors.",
+    "A delightful dining experience that exceeded all expectations.",
+    "Exquisite food that left me feeling satisfied and content.",
+    "Each bite was like a taste of heaven.",
+    "Wonderful food paired with exceptional service.",
+    "An absolute gem for food lovers!",
+    "My taste buds were treated to a symphony of flavors.",
+    "I'll definitely be coming back for more!",
+    "A culinary adventure that I didn't want to end.",
+    "Every dish was a work of art.",
+    "Delicious food served with a smile.",
+    "An outstanding dining experience that I'll never forget.",
+    "The quality of the ingredients really shone through in every dish.",
+    "I left with a full stomach and a happy heart.",
+    "One word: perfection.",
+    "Absolutely delectable! I can't wait to return for another meal."
+  ]
+
+  negative_comments = [
+    "The food was amazing, but the location is quite a trek.",
+    "Delicious dishes, but wish the location was more convenient.",
+    "Fantastic flavors, but the distance from my place is a downside.",
+    "The food exceeded my expectations, but the remote location was a drawback.",
+    "Incredible cuisine, but the distance made it a bit of a hassle.",
+    "I loved the food, but the location was farther than I anticipated.",
+    "The dishes were divine, but I wish the restaurant was closer to home.",
+    "Exceptional taste, but the remote location was a bit inconvenient.",
+    "The food was top-notch, but the distance was a bit of a deterrent.",
+    "Absolutely delicious food, but the far-off location was a downside."
+  ]
+  
+
   crawls.each do |a_crawl|
     a_crawl.stops.each do |a_stop|
       visit = Visit.new
       visit.stop_id = a_stop.id
       visit.user_id = user.id
       visit.photo = Faker::Avatar.image
-      visit.caption = Faker::Restaurant.review
-      visit.rating = rand(1..5)
+      if a_crawl.name = "Deep Dish Pizza"
+        visit.caption = negative_comments.sample(1).at(0)
+      else
+        visit.caption = positive_comments.sample(1).at(0)
+      end
+
+      if a_crawl.name = "Deep Dish Pizza"
+        visit.rating = rand(1..3)
+      else
+        visit.rating = rand(3..5)
+      end
       visit.save
     end
   end

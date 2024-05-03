@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_02_202854) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_03_215608) do
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
     t.integer "crawl_id"
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_202854) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "photo"
   end
 
   create_table "experiences", force: :cascade do |t|

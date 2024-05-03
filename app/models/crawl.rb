@@ -3,8 +3,9 @@
 # Table name: crawls
 #
 #  id          :integer          not null, primary key
-#  name        :string
 #  city        :string
+#  name        :string
+#  photo       :string
 #  state       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

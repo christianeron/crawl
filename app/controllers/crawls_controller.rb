@@ -24,6 +24,7 @@ class CrawlsController < ApplicationController
     the_crawl.city = params.fetch("query_city")
     the_crawl.state = params.fetch("query_state")
     the_crawl.user_id = params.fetch("query_user_id")
+    the_crawl.photo = params.fetch("query_photo")
 
     if the_crawl.valid?
       the_crawl.save
@@ -42,6 +43,7 @@ class CrawlsController < ApplicationController
     the_crawl.city = params.fetch("query_city")
     the_crawl.state = params.fetch("query_state")
     the_crawl.user_id = params.fetch("query_user_id")
+    the_crawl.photo = params.fetch("query_photo")
 
     if the_crawl.valid?
       the_crawl.save

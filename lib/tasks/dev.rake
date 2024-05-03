@@ -25,6 +25,14 @@ task({ :sample_data => :environment }) do
     category.save
   end
 
+  # Create experiences
+  experiences = ["Pizza", "Hot Dogs", "French Fries", "Burgers", "Sushi", "Tacos", "Pasta", "Salad", "Steak", "Chicken Wings", "Ramen", "Sandwiches", "Ice Cream", "Curry", "Dim Sum", "Sushi Burrito", "Barbecue Ribs", "Fish and Chips", "Pad Thai", "Falafel"]
+  experiences.each do |experience_name|
+    experience = Experience.new
+    experience.name = experience_name
+    experience.save
+  end
+
   # Create users
   usernames = ["alice","bob","carol","dave","eve","frank","grace","heidi","ivan","judy","mallory","nancy","olivia","peter"]
     usernames.each do |username|
@@ -155,6 +163,7 @@ task({ :sample_data => :environment }) do
       stop.recommendation = "Designed by American artist Alexander Calder, Flamingo is a striking red sculpture located in the Federal Plaza in the heart of the Loop. Its vibrant color and abstract form make it a prominent feature of the city's skyline."
       stop.save
 
+      
   # Create bookmarks
   usernames.each do |username|
     user = User.where(:username => username).at(0)
@@ -219,13 +228,13 @@ task({ :sample_data => :environment }) do
       visit.stop_id = a_stop.id
       visit.user_id = user.id
       visit.photo = Faker::Avatar.image
-      if a_crawl.name = "Deep Dish Pizza"
+      if a_crawl.name == "Deep Dish Pizza"
         visit.caption = negative_comments.sample(1).at(0)
       else
         visit.caption = positive_comments.sample(1).at(0)
       end
 
-      if a_crawl.name = "Deep Dish Pizza"
+      if a_crawl.name == "Deep Dish Pizza"
         visit.rating = rand(1..3)
       else
         visit.rating = rand(3..5)
@@ -247,11 +256,11 @@ task({ :sample_data => :environment }) do
     end
   end
 
-
   # Summary
   puts "There are now #{User.count} rows in the user table."
   puts "There are now #{Category.count} rows in the category table."
-  puts "There are now #{Location.count} rows in the category table."
+  puts "There are now #{Experience.count} rows in the experience table."
+  puts "There are now #{Location.count} rows in the location table."
   puts "There are now #{Crawl.count} rows in the crawl table."
   puts "There are now #{Stop.count} rows in the stop table."
   puts "There are now #{Bookmark.count} rows in the bookmark table."

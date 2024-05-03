@@ -17,6 +17,7 @@ class Crawl < ApplicationRecord
   validates(:name, presence:true)
   validates(:city, presence:true)
   validates(:state, presence:true)
+  validates(:photo, presence:true)
 
   # Direct associations
   belongs_to :user, required: true, class_name: "User", foreign_key: "user_id"

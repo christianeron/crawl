@@ -22,7 +22,7 @@ class StopsController < ApplicationController
     the_stop.crawl_id = params.fetch("query_crawl_id")
     the_stop.order_number = params.fetch("query_order_number")
     the_stop.location_id = params.fetch("query_location_id")
-    the_stop.menu_recommendation = params.fetch("query_menu_recommendation")
+    the_stop.recommendation = params.fetch("query_recommendation")
 
     if the_stop.valid?
       the_stop.save
@@ -39,7 +39,7 @@ class StopsController < ApplicationController
     the_stop.crawl_id = params.fetch("query_crawl_id")
     the_stop.order_number = params.fetch("query_order_number")
     the_stop.location_id = params.fetch("query_location_id")
-    the_stop.menu_recommendation = params.fetch("query_menu_recommendation")
+    the_stop.recommendation = params.fetch("query_recommendation")
 
     if the_stop.valid?
       the_stop.save

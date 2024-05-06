@@ -11,11 +11,13 @@
         </a>
       </div>
 
+      <% if current_user == @the_stop.crawl.user %>
       <div>
         <a href="/delete_stop/<%= @the_stop.id %>">
           Delete stop
         </a>
       </div>
+      <% end %>
     </div>
 
     <dl>
@@ -37,7 +39,7 @@
         Location
       </dt>
       <dd>
-        <%= @the_stop.location_id %>
+        <%= @the_stop.location.name %> (<%= @the_stop.location.city %>, <%= @the_stop.location.state %>)
       </dd>
 
       <dt>
@@ -45,6 +47,19 @@
       </dt>
       <dd>
         <%= @the_stop.recommendation %>
+      </dd>
+
+      <dt>
+        Rating
+      </dt>
+      <dd>
+          <% visits = @the_stop.visits%>
+          <% ratings = visits.pluck(:rating)%>
+          <% if ratings.sum == 0 %>
+            <%= "Not rated yet!" %>
+          <% else %>
+            <%= (ratings.sum / ratings.size.to_f).round(1) %>
+          <% end %>
       </dd>
 
       <dt>
@@ -64,8 +79,8 @@
   </div>
 </div>
 
+<% if current_user == @the_stop.crawl.user %>
 <hr>
-
 
 <div>
   <div>
@@ -79,7 +94,13 @@
           Crawl
         </label>
 
-        <input type="text" id="crawl_id_box" name="query_crawl_id" value="<%= @the_stop.crawl_id %>">
+        <% user_crawls = Crawl.where(:user_id => current_user.id) %>
+        <select id="crawl_id_box" name="query_crawl_id">
+          <% user_crawls.each do |a_crawl| %>
+            <option value="<%= a_crawl.id %>"><%= a_crawl.name %></option>
+          <% end %>
+        </select>
+
       </div>
 
       <div>
@@ -95,7 +116,16 @@
           Location
         </label>
 
-        <input type="text" id="location_id_box" name="query_location_id" value="<%= @the_stop.location_id %>">
+        <select id="location_id_box" name="query_location_id">
+          <% Location.all.each do |a_location| %>
+            <% if a_location.id == @the_stop.location_id %>
+            <option value="<%= a_location.id %>" selected><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+            <% else %>
+            <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+            <% end %>
+          <% end %>
+        </select>
+
       </div>
 
       <div>
@@ -113,4 +143,4 @@
   </div>
 </div>
 
-<hr>
+<% end %>

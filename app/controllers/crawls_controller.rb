@@ -3,6 +3,8 @@ class CrawlsController < ApplicationController
     matching_crawls = Crawl.all
 
     @list_of_crawls = matching_crawls.order({ :created_at => :desc })
+    
+    @categories = Category.all.order("name")
 
     render({ :template => "crawls/index" })
   end
@@ -13,6 +15,8 @@ class CrawlsController < ApplicationController
     matching_crawls = Crawl.where({ :id => the_id })
 
     @the_crawl = matching_crawls.at(0)
+
+    @categories = Category.all.order("name")
 
     render({ :template => "crawls/show" })
   end

@@ -2,7 +2,7 @@ class StopsController < ApplicationController
   def index
     matching_stops = Stop.all
 
-    @list_of_stops = matching_stops.order({ :created_at => :desc })
+    @list_of_stops = matching_stops.order({ :crawl_id => :asc , :order_number => :asc })
 
     render({ :template => "stops/index" })
   end

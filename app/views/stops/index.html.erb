@@ -20,7 +20,13 @@
           Crawl
         </label>
 
-        <input type="text" id="crawl_id_box" name="query_crawl_id">
+          <% user_crawls = Crawl.where(:user_id => current_user.id) %>
+            <select id="crawl_id_box" name="query_crawl_id">
+              <% user_crawls.each do |a_crawl| %>
+                <option value="<%= a_crawl.id %>"><%= a_crawl.name %></option>
+              <% end %>
+            </select>
+
       </div>
 
       <div>
@@ -36,7 +42,12 @@
           Location
         </label>
 
-        <input type="text" id="location_id_box" name="query_location_id">
+        <select id="location_id_box" name="query_location_id">
+          <% Location.all.each do |a_location| %>
+            <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+          <% end %>
+        </select>
+
       </div>
 
       <div>
@@ -80,6 +91,10 @@
         </th>
 
         <th>
+          Rating
+        </th>
+
+        <th>
           Created at
         </th>
 
@@ -98,7 +113,7 @@
         </td>
 
         <td>
-          <%= a_stop.crawl_id %>
+          <%= a_stop.crawl.name %>
         </td>
 
         <td>
@@ -106,7 +121,7 @@
         </td>
 
         <td>
-          <%= a_stop.location_id %>
+          <%= a_stop.location.name %>
         </td>
 
         <td>
@@ -114,11 +129,22 @@
         </td>
 
         <td>
+          <% visits = a_stop.visits%>
+          <% ratings = visits.pluck(:rating)%>
+          <% if ratings.sum == 0 %>
+            <%= "Not rated yet!" %>
+          <% else %>
+            <%= (ratings.sum / ratings.size.to_f).round(1) %>
+          <% end %>
+        </td>
+
+        <td>
           <%= time_ago_in_words(a_stop.created_at) %> ago
         </td>
+
         <td>
           <%= time_ago_in_words(a_stop.updated_at) %> ago
-        </td>
+        </td>        
 
         <td>
           <a href="/stops/<%= a_stop.id %>">

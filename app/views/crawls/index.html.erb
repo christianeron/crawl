@@ -34,7 +34,11 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
           Category
         </label>
 
-        <input type="text" id="category_id_box" name="query_category_id">
+        <select id="category_id_box" name="query_category_id">
+          <% @categories.each do |category| %>
+          <option value="<%= category.id %>"><%= category.name %></option>
+          <% end %>
+        </select>
       </div>
 
       <div>
@@ -101,15 +105,19 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
         </th>
 
         <th>
-          User
+          Number of Stops
         </th>
 
         <th>
-          Created at
+          Rating
         </th>
 
         <th>
-          Updated at
+          Creator
+        </th>
+
+        <th>
+          Last updated
         </th>
 
         <th>
@@ -131,7 +139,7 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
         </td>
 
         <td>
-          <img src="<%= a_crawl.photo %>">
+          <img src="<%= a_crawl.photo %>" height="300px">
         </td>
 
         <td>
@@ -139,14 +147,25 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
         </td>
 
         <td>
+          <%= a_crawl.stops.size %>
+        </td>
+
+        <td>
+          <% visits = a_crawl.visits%>
+          <% ratings = visits.pluck(:rating)%>
+          <% if ratings.sum == 0 %>
+            <%= "Not rated yet!" %>
+          <% else %>
+            <%= (ratings.sum / ratings.size.to_f).round(1) %>
+          <% end %>
+        </td>
+
+        <td>
           <%= a_crawl.user.username %>
         </td>
 
         <td>
-          <%= time_ago_in_words(a_crawl.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_crawl.updated_at) %> ago
+          <%= a_crawl.updated_at.strftime("%b %d, %Y") %>
         </td>
 
         <td>

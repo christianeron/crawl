@@ -34,4 +34,6 @@ class Crawl < ApplicationRecord
   has_many :experiences, through: :tags, source: :experience
 
   has_many :following_users, through: :bookmarks, source: :user
+
+  has_many :visits, through: :stops, source: :visits
 end

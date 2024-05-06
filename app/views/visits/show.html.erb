@@ -11,11 +11,15 @@
         </a>
       </div>
 
+      <% if current_user == @the_visit.user %>
+
       <div>
         <a href="/delete_visit/<%= @the_visit.id %>">
           Delete visit
         </a>
       </div>
+      <% end %>
+
     </div>
 
     <dl>
@@ -23,7 +27,7 @@
         User
       </dt>
       <dd>
-        <%= @the_visit.user_id %>
+        <%= @the_visit.user.username %>
       </dd>
 
       <dt>
@@ -73,6 +77,7 @@
 
 <hr>
 
+<% if current_user == @the_visit.user %>
 
 <div>
   <div>
@@ -82,19 +87,11 @@
 
     <form action="/modify_visit/<%= @the_visit.id %>"  method="post" >
       <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_visit.user_id %>">
+        <input type="hidden" id="user_id_box" name="query_user_id" value="<%= @the_visit.user_id %>">
       </div>
 
       <div>
-        <label for="stop_id_box">
-          Stop
-        </label>
-
-        <input type="text" id="stop_id_box" name="query_stop_id" value="<%= @the_visit.stop_id %>">
+        <input type="hidden" id="stop_id_box" name="query_stop_id" value="<%= @the_visit.stop_id %>">
       </div>
 
       <div>
@@ -129,3 +126,5 @@
 </div>
 
 <hr>
+
+<% end %>

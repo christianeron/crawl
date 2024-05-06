@@ -13,15 +13,96 @@
         </a>
       </div>
 
+      <% if current_user == @the_crawl.user %>
       <div>
         <a href="/delete_crawl/<%= @the_crawl.id %>">
           Delete crawl
         </a>
       </div>
+
+      <div>
+        <a href="/stops">
+          Add stop
+        </a>
+      </div>
+
+      <% end %>
     </div>
 
     <hr>
 
+    <% if current_user == @the_crawl.user%>
+
+    <div>
+      <div>
+        <h2>
+          Edit crawl
+        </h2>
+
+        <form action="/modify_crawl/<%= @the_crawl.id %>"  method="post" >
+          <div>
+            <label for="name_box">
+              Name
+            </label>
+
+            <input type="text" id="name_box" name="query_name" value="<%= @the_crawl.name %>">
+          </div>
+
+          <div>
+            <label for="category_id_box">
+              Category
+            </label>
+
+            <select id="category_id_box" name="query_category_id" value="<%= @the_crawl.category_id %>">
+              <% @categories.each do |category| %>
+                <% if category.id == @the_crawl.category_id %>
+                  <option value="<%= category.id %>" selected><%= category.name %></option>
+                <% else %>
+                  <option value="<%= category.id %>"><%= category.name %></option>
+                <% end %>
+              <% end %>
+            </select>
+
+          </div>
+
+          <div>
+            <label for="city_box">
+              City
+            </label>
+
+            <input type="text" id="city_box" name="query_city" value="<%= @the_crawl.city %>">
+          </div>
+
+          <div>
+            <label for="state_box">
+              State
+            </label>
+
+            <input type="text" id="state_box" name="query_state" value="<%= @the_crawl.state %>">
+          </div>
+
+          <div>
+            <label for="photo_box">
+              Photo url
+            </label>
+
+            <input type="text" id="photo_box" name="query_photo" value="<%= @the_crawl.photo %>">
+          </div>
+
+          <div>
+            <input type="hidden" id="user_id_box" name="query_user_id" value="<%= @the_crawl.user_id %>">
+          </div>
+
+          <button>
+            Update crawl
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <% end %>
+    
+    <hr>
 
     <div>
       <%the_stops = @the_crawl.stops %>
@@ -49,71 +130,6 @@
       <% end %>
     </div>
     
-  </div>
-</div>
-
-<hr>
-
-
-<div>
-  <div>
-    <h2>
-      Edit crawl
-    </h2>
-
-    <form action="/modify_crawl/<%= @the_crawl.id %>"  method="post" >
-      <div>
-        <label for="name_box">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name" value="<%= @the_crawl.name %>">
-      </div>
-
-      <div>
-        <label for="category_id_box">
-          Category
-        </label>
-
-        <input type="text" id="category_id_box" name="query_category_id" value="<%= @the_crawl.category_id %>">
-      </div>
-
-      <div>
-        <label for="city_box">
-          City
-        </label>
-
-        <input type="text" id="city_box" name="query_city" value="<%= @the_crawl.city %>">
-      </div>
-
-      <div>
-        <label for="state_box">
-          State
-        </label>
-
-        <input type="text" id="state_box" name="query_state" value="<%= @the_crawl.state %>">
-      </div>
-
-      <div>
-        <label for="photo_box">
-          State
-        </label>
-
-        <input type="text" id="photo_box" name="query_photo" value="<%= @the_crawl.photo %>">
-      </div>
-
-      <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_crawl.user_id %>">
-      </div>
-
-      <button>
-        Update crawl
-      </button>
-    </form>
   </div>
 </div>
 

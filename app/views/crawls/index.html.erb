@@ -97,6 +97,10 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
         </th>
 
         <th>
+          Tags
+        </th>
+
+        <th>
           Photo
         </th>
 
@@ -139,6 +143,14 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 
         <td>
           <%= a_crawl.category.name %>
+        </td>
+
+        <td>
+          <% a_crawl.experiences.each_with_index do |a_experience, index| %>
+            <% if index >= 1 then %>, <% end %>
+            <%= a_experience.name %>
+          
+          <% end %>
         </td>
 
         <td>

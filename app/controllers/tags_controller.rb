@@ -24,9 +24,9 @@ class TagsController < ApplicationController
 
     if the_tag.valid?
       the_tag.save
-      redirect_to("/tags", { :notice => "Tag created successfully." })
+      redirect_to("/crawls/#{the_tag.crawl_id}", { :notice => "Tag created successfully." })
     else
-      redirect_to("/tags", { :alert => the_tag.errors.full_messages.to_sentence })
+      redirect_to("/crawls/#{the_tag.crawl_id}", { :alert => the_tag.errors.full_messages.to_sentence })
     end
   end
 

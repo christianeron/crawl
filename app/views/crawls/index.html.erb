@@ -122,6 +122,9 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 
         <th>
         </th>
+
+        <th>
+        </th>
       </tr>
 
       <% @list_of_crawls.each do |a_crawl| %>
@@ -173,6 +176,29 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
             Show details
           </a>
         </td>
+
+        <td>
+          <% if current_user == nil%>
+            <a href="/users/sign_in">Sign in</a> to bookmark a Crawl.
+          <% else %>
+
+            <% if Bookmark.where(:crawl_id => a_crawl.id, :user_id => current_user.id).at(0) == nil %>
+              <form action="/insert_bookmark" method="post">
+                <input type="hidden" value="<%= current_user.id %>" name="query_user_id" id="user_id_box" >
+                <input type="hidden" value="<%= a_crawl.id %>" name="query_crawl_id" id="crawl_id_box" >
+                <input type="hidden" value=nil name="query_rating" id="rating_box" >
+                <button name="button">
+                  Bookmark
+                </button>
+              </form>
+              <% else %>
+                <a href="/delete_bookmark/<%= Bookmark.where(:crawl_id => a_crawl.id, :user_id => current_user.id).at(0).id %>">
+                  Unbookmark
+                </a>
+              <% end %>
+          <% end %>
+        </td>
+
       </tr>
       <% end %>
     </table>

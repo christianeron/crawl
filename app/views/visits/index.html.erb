@@ -14,7 +14,13 @@
       Add a new visit
     </h2>
 
-    <form action="/insert_visit" method="post">
+    <% if current_user == nil%>
+
+    <a href="/users/sign_in">Sign in</a> to add a Visit.
+
+    <% else %>
+
+    <form action="/insert_visit" method="post" enctype="multipart/form-data">
       <div>
         <input type="hidden" id="user_id_box" name="query_user_id" value = <%= current_user.id %>>
       </div>
@@ -53,13 +59,16 @@
           Photo
         </label>
 
-        <input type="text" id="photo_box" name="query_photo">
+        <input type="file" id="photo_box" name="query_photo" class="form-control">
       </div>
 
       <button>
         Create visit
       </button>
     </form>
+
+    <% end %>
+
   </div>
 </div>
 
@@ -127,7 +136,7 @@
         </td>
 
         <td>
-          <img src="<%= a_visit.photo %>">
+          <img src="<%= a_visit.photo %>" class="img-responsive">
         </td>
 
         <td>

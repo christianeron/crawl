@@ -5,6 +5,7 @@
 #  id         :integer          not null, primary key
 #  caption    :text
 #  photo      :string
+#  photo_url  :string
 #  rating     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -12,11 +13,16 @@
 #  user_id    :integer
 #
 class Visit < ApplicationRecord
+  mount_uploader :photo, VisitPhotoUploader
+  
   # Validations
-  validates(:photo, presence:true)
+  validates(:photo, presence: true, unless: ->(visit) { visit.photo_url.present? })
+  validates(:photo_url, presence: true, unless: ->(visit) { visit.photo.present? })
   validates(:caption, presence:true)
   validates(:rating, presence:true)
   
+
+
   # Direct associations
   belongs_to :user, required: true, class_name: "User", foreign_key: "user_id"
 

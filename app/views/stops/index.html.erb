@@ -8,11 +8,19 @@
 
 <hr>
 
+
 <div>
   <div>
+
     <h2>
       Add a new stop
     </h2>
+
+    <% if current_user == nil%>
+
+    <a href="/users/sign_in">Sign in</a> to add a Stop.
+
+    <% else %>
 
     <form action="/insert_stop" method="post">
       <div>
@@ -62,8 +70,13 @@
         Create stop
       </button>
     </form>
+    
+    <% end %>
+
   </div>
 </div>
+
+
 
 <hr>
 <div>

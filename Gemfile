@@ -82,6 +82,8 @@ gem "htmlbeautifier"
 gem "http"
 gem "sqlite3", "~> 1.4"
 gem "table_print"
+gem "carrierwave"
+gem "cloudinary"
 
 group :development do
   gem "annotate"

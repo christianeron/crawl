@@ -227,7 +227,7 @@ task({ :sample_data => :environment }) do
       visit = Visit.new
       visit.stop_id = a_stop.id
       visit.user_id = user.id
-      visit.photo_url = Faker::Avatar.image
+      visit.photo_url = "https://images.unsplash.com/photo-1714916666512-ece33404f093?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       if a_crawl.name == "Deep Dish Pizza"
         visit.caption = negative_comments.sample(1).at(0)
       else

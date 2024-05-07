@@ -1,4 +1,5 @@
 class CrawlsController < ApplicationController
+
   def index
     matching_crawls = Crawl.all
 
@@ -10,13 +11,40 @@ class CrawlsController < ApplicationController
   end
 
   def show
+    require "http"
+    require "json"
+
     the_id = params.fetch("path_id")
 
     matching_crawls = Crawl.where({ :id => the_id })
 
     @the_crawl = matching_crawls.at(0)
-
     @categories = Category.all.order("name")
+
+    gmaps_key = ENV.fetch("GMAPS_KEY")
+
+    @stop_locations = Array.new
+    
+    @the_crawl.stops.each do |a_stop|
+      stop_order_number = a_stop.order_number
+
+      location = "#{a_stop.location.street_address},#{a_stop.location.street_address_2},#{a_stop.location.city},#{a_stop.location.state},#{a_stop.location.zip_code}"
+      location = location.gsub(" ","%20")
+
+      location_url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{location}&key=#{gmaps_key}"
+
+      returned_location = HTTP.get(location_url)
+      parsed_location = JSON.parse(returned_location)
+      location_results = parsed_location.fetch("results")[0].fetch("geometry").fetch("location")
+
+      stop_latitude = location_results.fetch("lat")
+      stop_longitude = location_results.fetch("lng")
+
+      @stop_locations = @stop_locations.push({:name=> a_stop.location.name, :num => stop_order_number, :lat => stop_latitude, :lng => stop_longitude})
+
+    end
+    
+    @map_call = "https://maps.googleapis.com/maps/api/js?key=#{gmaps_key}&callback=initMap"
 
     render({ :template => "crawls/show" })
   end

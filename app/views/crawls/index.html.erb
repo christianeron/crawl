@@ -21,55 +21,55 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 <% else %>    
 
     <form action="/insert_crawl" method="post">
-      <div>
-        <label for="name_box">
+      <div class="mb-3">
+        <label for="name_box" class="form-label">
           Name
         </label>
 
-        <input type="text" id="name_box" name="query_name">
+        <input type="text" id="name_box" name="query_name" class="form-control">
       </div>
 
-      <div>
-        <label for="category_id_box">
+      <div class="mb-3">
+        <label for="category_id_box"  class="form-label">
           Category
         </label>
 
-        <select id="category_id_box" name="query_category_id">
+        <select id="category_id_box" name="query_category_id" class="form-control">
           <% @categories.each do |category| %>
           <option value="<%= category.id %>"><%= category.name %></option>
           <% end %>
         </select>
       </div>
 
-      <div>
-        <label for="city_box">
+      <div class="mb-3">
+        <label for="city_box" class="form-label">
           City
         </label>
 
-        <input type="text" id="city_box" name="query_city">
+        <input type="text" id="city_box" name="query_city" class="form-control">
       </div>
 
-      <div>
-        <label for="state_box">
+      <div class="mb-3">
+        <label for="state_box" class="form-label">
           State
         </label>
 
-        <input type="text" id="state_box" name="query_state">
+        <input type="text" id="state_box" name="query_state" class="form-control">
       </div>
 
-      <div>
-        <label for="photo_box">
+      <div class="mb-3">
+        <label for="photo_box" class="form-label">
           Photo url
         </label>
 
-        <input type="text" id="photo_box" name="query_photo">
+        <input type="text" id="photo_box" name="query_photo" class="form-control">
       </div>
 
       <div>
         <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
       </div>
 
-      <button>
+      <button class="btn btn-primary">
         Create crawl
       </button>
     </form>

@@ -23,6 +23,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Validations
+  validates :username, uniqueness: true, presence: true, length: { minimum: 3,
+  too_short: "%{count} characters is the minimum allowed" }
+  
+
   # Direct associations
   has_many  :bookmarks, class_name: "Bookmark", foreign_key: "user_id", dependent: :destroy
 

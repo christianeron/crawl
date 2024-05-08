@@ -19,7 +19,7 @@ class Visit < ApplicationRecord
   validates(:photo, presence: true, unless: ->(visit) { visit.photo_url.present? })
   validates(:photo_url, presence: true, unless: ->(visit) { visit.photo.present? })
   validates(:caption, presence:true)
-  validates(:rating, presence:true)
+  validates(:rating, presence:true, inclusion: 1..5)
 
   # Direct associations
   belongs_to :user, required: true, class_name: "User", foreign_key: "user_id"

@@ -1,83 +1,63 @@
-<div>
-  <div>
+
+<div class="row mb-3">
+  <div class="col-md-12 d-flex align-items-center">
     <h1>
       List of all crawls
     </h1>
-  </div>
-</div>
 
-<hr>
+    <% if current_user == nil%>
+    <div class="ms-auto">
+      <a href="/users/sign_in" class="btn btn-outline-success">Sign in to create crawl</a>
+    </div>
 
-<div>
-  <div>
-    <h2>
-      Add a new crawl
-    </h2>
-
-<% if current_user == nil%>
-
-Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
-
-<% else %>    
-
-    <form action="/insert_crawl" method="post">
-      <div class="mb-3">
-        <label for="name_box" class="form-label">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name" class="form-control">
-      </div>
-
-      <div class="mb-3">
-        <label for="category_id_box"  class="form-label">
-          Category
-        </label>
-
-        <select id="category_id_box" name="query_category_id" class="form-control">
-          <% @categories.each do |category| %>
-          <option value="<%= category.id %>"><%= category.name %></option>
-          <% end %>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="city_box" class="form-label">
-          City
-        </label>
-
-        <input type="text" id="city_box" name="query_city" class="form-control">
-      </div>
-
-      <div class="mb-3">
-        <label for="state_box" class="form-label">
-          State
-        </label>
-
-        <input type="text" id="state_box" name="query_state" class="form-control">
-      </div>
-
-      <div class="mb-3">
-        <label for="photo_box" class="form-label">
-          Photo url
-        </label>
-
-        <input type="text" id="photo_box" name="query_photo" class="form-control">
-      </div>
-
-      <div>
-        <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
-      </div>
-
-      <button class="btn btn-primary">
-        Create crawl
+    <% else %>
+    <div class="ms-auto">
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#newCrawlModal">
+        Create a new crawl
       </button>
-    </form>
+    </div>
+
+    <% end %>
+
   </div>
 </div>
 
-<% end %>    
+<ul class="nav nav-tabs nav-fill mb-3" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active-tab-pane" type="button" role="tab" aria-controls="active-tab-pane" aria-selected="true">Active posts (21)</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="expired-tab" data-bs-toggle="tab" data-bs-target="#expired-tab-pane" type="button" role="tab" aria-controls="expired-tab-pane" aria-selected="false">Expired posts (22)</button>
+  </li>
+</ul>
 
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="active-tab-pane" role="tabpanel" aria-labelledby="active-tab" tabindex="0">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              <h1 class="h6 my-1">Lightweight Paper Car</h1>
+
+              <div>
+                Expires on May  9, 2024
+              </div>
+            </div>
+
+            <div class="card-body">
+              <p>Et solio cohaero. Theatrum apparatus enim. Arcus corroboro usitas.</p>
+            </div>
+
+            <div class="card-footer">
+              Posted on Apr 27, 2024
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <hr>
 <div>
@@ -218,3 +198,85 @@ Must be <a href="/users/sign_in">signed in</a> to add a new Crawl.
 </div>
 
 <hr>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="newCrawlModal" tabindex="-1" aria-labelledby="newCrawlModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newCrawlModalLabel">New crawl</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/insert_crawl" method="post">
+          <div class="mb-3">
+            <label for="name_box" class="form-label">
+              Name
+            </label>
+
+            <input type="text" id="name_box" name="query_name" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="category_id_box"  class="form-label">
+              Category
+            </label>
+
+            <select id="category_id_box" name="query_category_id" class="form-control">
+              <% @categories.each do |category| %>
+              <option value="<%= category.id %>"><%= category.name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="city_box" class="form-label">
+              City
+            </label>
+
+            <input type="text" id="city_box" name="query_city" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="state_box" class="form-label">
+              State
+            </label>
+
+            <input type="text" id="state_box" name="query_state" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="photo_box" class="form-label">
+              Photo url
+            </label>
+
+            <input type="text" id="photo_box" name="query_photo" class="form-control">
+          </div>
+
+          <% if current_user == nil%>
+          <div>
+            <a href="/users/sign_in">Sign in to add a new Crawl</a>
+          </div>
+          <% else %>    
+          <div>
+            <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
+          </div>
+          <% end %>
+
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Add post
+            </button>
+          </div>
+          
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

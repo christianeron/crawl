@@ -16,8 +16,7 @@ class Visit < ApplicationRecord
   mount_uploader :photo, VisitPhotoUploader
   
   # Validations
-  validates(:photo, presence: true, unless: ->(visit) { visit.photo_url.present? })
-  validates(:photo_url, presence: true, unless: ->(visit) { visit.photo.present? })
+  validates(:photo, presence:true)
   validates(:caption, presence:true)
   validates(:rating, presence:true, inclusion: 1..5)
 

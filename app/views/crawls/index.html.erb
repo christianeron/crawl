@@ -33,39 +33,93 @@
 
 <% Category.all.each_with_index do |a_category, index| %>
 
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade<% if index == 0 then %> show active<% end %>" id="<%= a_category.name.gsub(" ","_") %>-tab-pane" role="tabpanel" aria-labelledby="<%= a_category.name.gsub(" ","_") %>-tab" tabindex="0">
-    
-    <div class="row row-cols-1 row-cols-md-4 g-4">
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade<% if index == 0 then %> show active<% end %>" id="<%= a_category.name.gsub(" ","_") %>-tab-pane" role="tabpanel" aria-labelledby="<%= a_category.name.gsub(" ","_") %>-tab" tabindex="0">
       
-      <% a_category.crawls.each do |a_crawl| %>
-        <div class="col">
-          <div class="card">
-            <img src="<%= a_crawl.photo %>" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title"><%= a_crawl.name %></h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">An item</li>
-              <li class="list-group-item">A second item</li>
-              <li class="list-group-item">A third item</li>
-            </ul>
-            <div class="card-body">
-              <a href="/crawls/<%= a_crawl.id%>" class="card-link">Details</a>
-              <a href="#" class="card-link">Bookmark</a>
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        
+        <% a_category.crawls.each do |a_crawl| %>
+          <div class="col">
+            <div class="card">
+              <img src="<%= a_crawl.photo %>" class="card-img-top " alt="...">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-content-center border">
+                  <h5 class="card-title border"><%= a_crawl.name %></h5>
+                  <span class="badge rounded-pill text-bg-primary align-content-center border">
+                  <% visits = a_crawl.visits%>
+                  <% ratings = visits.pluck(:rating)%>
+                  <% if ratings.sum == 0 %>
+                    n/a
+                  <% else %>
+                    <%= (ratings.sum / ratings.size.to_f).round(1) %>
+                  <% end %>
+                  </span>
+                </div>
+                <p class="card-text">
+                  <div>
+                    <%= a_crawl.city %>, <%= a_crawl.state %>
+                  </div>
+                  <div>
+                    by <%= a_crawl.user.username %>
+                  </div>
+                  <div>
+                    <% if a_crawl.stops.size > 0 %>
+                      Updated on <%= a_crawl.stops.pluck(:updated_at).max().strftime("%b %d, %Y") %>
+                    <% else %>
+                      Updated on <%= a_crawl.updated_at.strftime("%b %d, %Y") %>
+                    <% end %>
+                  </div>
+                  <div>
+                    <% a_crawl.experiences.each_with_index do |a_experience, index| %>
+                    <% if index >= 1 then %>, <% end %>
+                      <%= a_experience.name %>
+                    <% end %>
+                  </div>
+                </p>
+              </div>
+              <ul class="list-group list-group-flush">
+                <% a_crawl.stops.order(:order_number).each_with_index do |a_stop, index|  %>
+                  <% if index <= 2 %>
+                    <li class="list-group-item"><%= a_stop.location.name %></li>
+                  <% elsif index == 2 %>
+                    <li class="list-group-item">
+                      <a href="/crawls/<%= a_crawl.id%>">View all <%= a_crawl.stops.size%> stops</a>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a href="/crawls/<%= a_crawl.id%>" class="card-link">Details</a>
+                    <% if current_user != nil%>
+                    <% if Bookmark.where(:crawl_id => a_crawl.id, :user_id => current_user.id).at(0) == nil %>
+                      <form action="/insert_bookmark" method="post">
+                        <input type="hidden" value="<%= current_user.id %>" name="query_user_id" id="user_id_box" >
+                        <input type="hidden" value="<%= a_crawl.id %>" name="query_crawl_id" id="crawl_id_box" >
+                        <input type="hidden" value=nil name="query_rating" id="rating_box" >
+                        <button name="button" class="btn btn-link">
+                          Bookmark
+                        </button>
+                      </form>
+                    <% else %>
+                        <a href="/delete_bookmark/<%= Bookmark.where(:crawl_id => a_crawl.id, :user_id => current_user.id).at(0).id %>" class="card-link">
+                          Unbookmark
+                        </a>
+                    <% end %>
+                  <% end %>
+                  <a href="#" class="card-link">Share</a>
+                  <% if current_user != nil && current_user == a_crawl.user %>
+                    <a href="#" class="card-link">Edit</a>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      <% end %>      
+        <% end %>      
+      </div>
     </div>
-  </div>
-</div>  
-
+  </div>  
 <% end %>
-
-<hr>
-
 
 
 <hr>
@@ -192,11 +246,11 @@
                   Bookmark
                 </button>
               </form>
-              <% else %>
+            <% else %>
                 <a href="/delete_bookmark/<%= Bookmark.where(:crawl_id => a_crawl.id, :user_id => current_user.id).at(0).id %>">
                   Unbookmark
                 </a>
-              <% end %>
+            <% end %>
           <% end %>
         </td>
 

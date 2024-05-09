@@ -23,41 +23,50 @@
 </div>
 
 <ul class="nav nav-tabs nav-fill mb-3" id="myTab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active-tab-pane" type="button" role="tab" aria-controls="active-tab-pane" aria-selected="true">Active posts (21)</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="expired-tab" data-bs-toggle="tab" data-bs-target="#expired-tab-pane" type="button" role="tab" aria-controls="expired-tab-pane" aria-selected="false">Expired posts (22)</button>
-  </li>
+
+  <% Category.all.each_with_index do |a_category, index| %>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link<% if index == 0 then %> active<% end %>" id="<%= a_category.name.gsub(" ","_") %>-tab" data-bs-toggle="tab" data-bs-target="#<%= a_category.name.gsub(" ","_") %>-tab-pane" type="button" role="tab" aria-controls="<%= a_category.name.gsub(" ","_") %>-tab-pane" aria-selected="<% if index == 0 then %>true<% else %>false<% end %>"><%= a_category.name %></button>
+    </li>
+  <% end %>
 </ul>
 
+<% Category.all.each_with_index do |a_category, index| %>
 
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="active-tab-pane" role="tabpanel" aria-labelledby="active-tab" tabindex="0">
+  <div class="tab-pane fade<% if index == 0 then %> show active<% end %>" id="<%= a_category.name.gsub(" ","_") %>-tab-pane" role="tabpanel" aria-labelledby="<%= a_category.name.gsub(" ","_") %>-tab" tabindex="0">
+    
     <div class="row row-cols-1 row-cols-md-4 g-4">
+      
+      <% a_category.crawls.each do |a_crawl| %>
         <div class="col">
           <div class="card">
-            <div class="card-header">
-              <h1 class="h6 my-1">Lightweight Paper Car</h1>
-
-              <div>
-                Expires on May  9, 2024
-              </div>
-            </div>
-
+            <img src="<%= a_crawl.photo %>" class="card-img-top" alt="...">
             <div class="card-body">
-              <p>Et solio cohaero. Theatrum apparatus enim. Arcus corroboro usitas.</p>
+              <h5 class="card-title"><%= a_crawl.name %></h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
-
-            <div class="card-footer">
-              Posted on Apr 27, 2024
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">An item</li>
+              <li class="list-group-item">A second item</li>
+              <li class="list-group-item">A third item</li>
+            </ul>
+            <div class="card-body">
+              <a href="/crawls/<%= a_crawl.id%>" class="card-link">Details</a>
+              <a href="#" class="card-link">Bookmark</a>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>      
     </div>
   </div>
-</div>
+</div>  
+
+<% end %>
+
+<hr>
+
+
 
 <hr>
 <div>

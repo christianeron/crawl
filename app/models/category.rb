@@ -12,7 +12,7 @@ class Category < ApplicationRecord
     validates(:name, presence:true)
 
   # Direct associations
-  has_many  :tours, class_name: "Crawl", foreign_key: "category_id", dependent: :destroy
+  has_many  :crawls, class_name: "Crawl", foreign_key: "category_id", dependent: :destroy
   
   # Indirect associations
   

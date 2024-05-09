@@ -13,6 +13,8 @@
 #  user_id     :integer
 #
 class Crawl < ApplicationRecord
+  mount_uploader :photo, CrawlPhotoUploader
+  
   # Validations
   validates(:name, presence:true)
   validates(:city, presence:true)

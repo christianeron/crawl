@@ -74,7 +74,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
-    crawl.photo = "https://images.unsplash.com/photo-1582476927499-65372fb1a458?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpY2FnbyUyMHBpenphfGVufDB8fDB8fHwy"
+    crawl.photo = URI.open("https://images.unsplash.com/photo-1582476927499-65372fb1a458?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpY2FnbyUyMHBpenphfGVufDB8fDB8fHwy")
     crawl.save
 
       #Stops
@@ -106,7 +106,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[0]).at(0).id
-    crawl.photo = "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZnJlbmNoJTIwZnJpZXN8ZW58MHx8MHx8fDI%3D"
+    crawl.photo = URI.open("https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZnJlbmNoJTIwZnJpZXN8ZW58MHx8MHx8fDI%3D")
     crawl.save
 
       #Stops
@@ -138,7 +138,7 @@ task({ :sample_data => :environment }) do
     crawl.state = "IL"
     crawl.user_id = User.all.sample.id
     crawl.category_id = Category.all.where(:name => categories[1]).at(0).id
-    crawl.photo = "https://images.unsplash.com/photo-1616624446421-b6a136da737d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpY2FnbyUyMGJlYW58ZW58MHx8MHx8fDI%3D"
+    crawl.photo = URI.open("https://images.unsplash.com/photo-1616624446421-b6a136da737d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpY2FnbyUyMGJlYW58ZW58MHx8MHx8fDI%3D")
     crawl.save
 
       #Stops

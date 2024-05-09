@@ -41,7 +41,9 @@
         <% a_category.crawls.each do |a_crawl| %>
           <div class="col">
             <div class="card">
-              <img src="<%= a_crawl.photo %>" class="card-img-top " alt="...">
+              
+              <%= cl_image_tag(a_crawl.photo, class: "card-img-top",raw_transformation: "w_400,h_300,c_auto,g_auto") %>
+            
               <div class="card-body">
                 <div class="d-flex justify-content-between align-content-center border">
                   <h5 class="card-title border"><%= a_crawl.name %></h5>
@@ -131,7 +133,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/insert_crawl" method="post">
+        <form action="/insert_crawl" method="post" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="name_box" class="form-label">
               Name
@@ -170,10 +172,10 @@
 
           <div class="mb-3">
             <label for="photo_box" class="form-label">
-              Photo url
+               Photo
             </label>
 
-            <input type="text" id="photo_box" name="query_photo" class="form-control">
+            <input type="file" id="photo_box" name="query_photo" class="form-control">
           </div>
 
           <% if current_user == nil%>

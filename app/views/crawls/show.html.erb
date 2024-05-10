@@ -1,38 +1,52 @@
-<div class="row mb-3">
-  <div class="col-md-12 d-flex align-items-center">
+<div class="row">
+
+  <div class="col-md-12">
     <h1><%= @the_crawl.name %></h1>
   </div>
 </div>
 
-<div class="row mb-3">
-  <div class="col-md-12 d-flex align-items-center">
-    <h2><%= @the_crawl.city %>, <%= @the_crawl.state %></h2> 
-  </div>
- </div>
-
-<div class="row mb-3">
-  <div class="col-md-12 d-flex align-items-center">
-    <h2><%= @the_crawl.user.username %></h2>
-  </div>
-<div>
-
-<div class="row mb-3">
-  <div class="col-md-12 d-flex align-items-center">
-      <h2>
+<div class="row">
+  <div class="col-md-4 d-flex flex-column">
+    <div class="d-flex justify-content-between">
+      <div>
+      <h4><%= @the_crawl.city %>, <%= @the_crawl.state %></h4>
+      <h4><%= @the_crawl.user.username %></h4>
+      <h4>
         <% @the_crawl.experiences.each do |a_experience| %>
           <%= a_experience.name %>
         <% end %>
-      </h2>
-  </div>
-<div>
-
-<div class="row mb-3">
-  <div class="col-md-4 d-flex align-items-center justify-content-between">
-    <%= cl_image_tag(@the_crawl.photo, class: "card-img-top",raw_transformation: "w_400,h_300,c_auto,g_auto") %>
-
-    <div>
-      <div id="map" style='width: 500px; height: 300px;'></div>
+      </h4>
+      </div>
+      <div>
+        <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_150,h_150,c_auto,g_auto") %>
+      </div>
     </div>
+    <div class="mt-auto">
+      <% if current_user == @the_crawl.user %>
+      <div class= "d-flex justify-content-between">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStopModal">
+          Add stop
+        </button>
+
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTagModal">
+          Add tag
+        </button>
+
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editCrawlModal">
+          Edit crawl
+        </button>
+
+        <a href="/delete_crawl/<%= @the_crawl.id %>" class="btn btn-danger">
+          Delete crawl
+        </a>
+      </div>
+
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-8 d-flex justify-content-center">
+    <div id="map" style='width: 600px; height: 300px;'></div>
 
     <script>
       function initMap() {
@@ -55,7 +69,7 @@
           position: {lat: <%= a_stop.fetch(:lat) %>, lng: <%= a_stop.fetch(:lng) %>}, 
           map: map,
           title: "<%= a_stop.fetch(:name) %>",
-          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png' 
+          label: "<%= a_stop.fetch(:num) %>"
         });
         
         // Click to show info window
@@ -74,66 +88,80 @@
     </script>
     <script src= <%= @map_call %>
     async defer></script>
-
-
-
   </div>
-<div>
 
+</div>
 
-<div>
-  <div>
+<div class="mb-3">
+  <hr>
+</div>
 
-    <hr>
-
-    <div>
-      <div>
-        <a href="/crawls">
-          Go back
-        </a>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+        
+  <% @the_crawl.stops.each_with_index do |a_stop, index| %>
+    <div class="col">
+      <div class="card text-bg-light mb-3 h-100">
+        <div class="card-header"> 
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Stop #<%= index + 1%>: <%= a_stop.location.name %></h5>
+            <span class="badge rounded-pill text-bg-primary align-content-center">
+              <% ratings = a_stop.visits.pluck(:rating)%>
+              <% if ratings.sum == 0 %>
+                -
+              <% else %>
+                <%= (ratings.sum / ratings.size.to_f).round(1) %>
+              <% end %>
+            </span>
+          </div>
+          <h6><%= a_stop.recommendation %></h6>
+        </div>
+        <div class="card-body">
+          <% a_stop.visits.each do |a_visit| %>
+            <div class="d-flex">
+              <%= a_visit.user.username%>:
+              <%= cl_image_tag(a_visit.photo, raw_transformation: "w_200,h_200,c_auto,g_auto") %>
+            </div>
+            <div>
+              <p class="card-text"><%= a_visit.caption %></p>
+            </div>
+          <% end %>  
+        </div>
+          <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">See all visits</a>
       </div>
-
-      <% if current_user == @the_crawl.user %>
-      <div>
-        <a href="/delete_crawl/<%= @the_crawl.id %>">
-          Delete crawl
-        </a>
-      </div>
-
-      <div>
-        <a href="/stops">
-          Add stop
-        </a>
-      </div>
-
-      <% end %>
     </div>
+  <% end %>
+</div>
 
-    <hr>
+<div class="mb-3">
+  <hr>
+</div>
 
-    <% if current_user == @the_crawl.user%>
 
-    <div>
-      <div>
-        <h2>
-          Edit crawl
-        </h2>
 
-        <form action="/modify_crawl/<%= @the_crawl.id %>"  method="post" >
-          <div>
-            <label for="name_box">
+<!-- Edit Crawl Modal -->
+<div class="modal fade" id="editCrawlModal" tabindex="-1" aria-labelledby="editCrawlModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editCrawlModalLabel">Edit crawl</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/modify_crawl/<%= @the_crawl.id %>" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="name_box" class="form-label">
               Name
             </label>
 
-            <input type="text" id="name_box" name="query_name" value="<%= @the_crawl.name %>">
+            <input type="text" id="name_box" name="query_name" value="<%= @the_crawl.name %>" class="form-control">
           </div>
 
-          <div>
-            <label for="category_id_box">
+          <div class="mb-3">
+            <label for="category_id_box" class="form-label">
               Category
             </label>
 
-            <select id="category_id_box" name="query_category_id" value="<%= @the_crawl.category_id %>">
+            <select id="category_id_box" name="query_category_id" value="<%= @the_crawl.category_id %>" class="form-control">
               <% @categories.each do |category| %>
                 <% if category.id == @the_crawl.category_id %>
                   <option value="<%= category.id %>" selected><%= category.name %></option>
@@ -145,151 +173,135 @@
 
           </div>
 
-          <div>
-            <label for="city_box">
+          <div class="mb-3">
+            <label for="city_box" class="form-label">
               City
             </label>
 
-            <input type="text" id="city_box" name="query_city" value="<%= @the_crawl.city %>">
+            <input type="text" id="city_box" name="query_city" value="<%= @the_crawl.city %>" class="form-control">
           </div>
 
-          <div>
-            <label for="state_box">
+          <div class="mb-3">
+            <label for="state_box" class="form-label">
               State
             </label>
 
-            <input type="text" id="state_box" name="query_state" value="<%= @the_crawl.state %>">
+            <input type="text" id="state_box" name="query_state" value="<%= @the_crawl.state %>" class="form-control">
           </div>
 
-          <div>
-            <label for="photo_box">
-              Photo url
+          <div class="mb-3">
+            <label for="photo_box" class="form-label">
+              Photo
             </label>
 
-            <input type="text" id="photo_box" name="query_photo" value="<%= @the_crawl.photo %>">
+            <input type="file" id="photo_box" name="query_photo" class="form-control">
           </div>
 
-          <div>
-            <input type="hidden" id="user_id_box" name="query_user_id" value="<%= @the_crawl.user_id %>">
-          </div>
+          <input type="hidden" id="user_id_box" name="query_user_id" value="<%= @the_crawl.user_id %>">
 
-          <button>
-            Update crawl
-          </button>
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Edit crawl
+            </button>
+          </div>
+          
         </form>
       </div>
-    </div>
-    
-    <hr>
 
-    <div>
-        <div>
-          <h2>
-            Add Tags
-          </h2>
-
-          <form action="/insert_tag"  method="post" >
-
-            <div>
-              <label for="experience_id_box">
-                Tag
-              </label>
-
-              <select id="experience_id_box" name="query_experience_id" >
-                <% Experience.all.each do |a_experience| %>
-                  <option value="<%= a_experience.id %>"><%= a_experience.name %></option>
-                <% end %>
-              </select>
-            </div>
-
-            <div>
-              <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
-            </div>
-
-            <button>
-              Add tag
-            </button>
-          </form>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
-
-    <% end %>
-    
-    <hr>
-
-    <div>
-      <%the_stops = @the_crawl.stops %>
-      <%the_stops.each do |a_stop|%>
-        <h2>Stop #<%= a_stop.order_number %></h2>
-          <dl>
-            <dt>
-              Recommendation
-            </dt>
-            <dd>
-              <%= a_stop.recommendation %>
-            </dd>
-
-            <% the_visits = a_stop.visits %>
-            <% the_visits.each do |a_visit|%>
-            <dt>
-              Visit 
-            </dt>
-            <dd>
-              <p><%= a_visit.user.username %>:</p>
-              <img src="<%= a_visit.photo %>">
-              <p><%= a_visit.caption %></p>
-            </dd>
-            <% end %>
-          </dl>
-      <% end %>
     </div>
-    
   </div>
 </div>
 
-<hr>
+<!-- New Tag Modal -->
+<div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addTagModalLabel">New Tag</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/insert_tag" method="post">
+          <div class="mb-3">
+            <label for="experience_id_box" class="form-label">
+              Tag
+            </label>
 
-<div>
-  <div id="map" style='width: 800px; height: 400px;'></div>
+            <select id="experience_id_box" name="query_experience_id" class="form-control">
+              <% Experience.all.each do |a_experience| %>
+                <option value="<%= a_experience.id %>"><%= a_experience.name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div>
+            <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
+          </div>
+            <button class="btn btn-primary">
+              Add tag
+            </button>
+          </div>
+          
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script>
-  function initMap() {
-    // initiate a new map
-    var mapDiv = document.getElementById('map');
-    var map = new google.maps.Map(mapDiv);
+<!-- New Stop Modal -->
+<div class="modal fade" id="addStopModal" tabindex="-1" aria-labelledby="addStopModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addStopModalLabel">New Stop</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/insert_stop" method="post">
 
-    // An empty bounds variable for seeding automatic zoom level (bounds of map)
-    var bounds = new google.maps.LatLngBounds();
-    
-    <% @stop_locations.each do |a_stop| %>
+            <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
+            <input type="hidden" id="order_number_box" name="query_order_number" value="<%= @the_crawl.stops.pluck(:order_number).max() + 1%>">
 
-    // Make an info window for this place
-    var infowindow_<%= a_stop.fetch(:num) %> = new google.maps.InfoWindow({
-      content: "<b><%= a_stop.fetch(:name) %></b>"
-    });
-    
-    // Make marker for this place
-    var marker_<%= a_stop.fetch(:num) %> = new google.maps.Marker({
-      position: {lat: <%= a_stop.fetch(:lat) %>, lng: <%= a_stop.fetch(:lng) %>}, 
-      map: map,
-      title: "<%= a_stop.fetch(:name) %>",
-      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png' 
-    });
-    
-    // Click to show info window
-    marker_<%= a_stop.fetch(:num) %>.addListener('click', function() {
-      infowindow_<%= a_stop.fetch(:num) %>.open(map, marker_<%= a_stop.fetch(:num) %>);
-    });
+            <div class="mb-3">
+              <label for="location_id_box" class="form-label">
+                Location
+              </label>
 
-    // Add this marker in map bounds
-    bounds.extend(new google.maps.LatLng(<%= a_stop.fetch(:lat) %>, <%= a_stop.fetch(:lng) %>));
+              <select id="location_id_box" name="query_location_id" class="form-control">
+                <% Location.all.each do |a_location| %>
+                  <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+                <% end %>
+              </select>
 
-    <% end %>
+            </div>
 
-    map.fitBounds(bounds);
-  };
-  
-</script>
-<script src= <%= @map_call %>
-async defer></script>
+            <div class="mb-3">
+              <label for="recommendation_box" class="form-label">
+                Recommendation
+              </label>
+
+              <textarea id="recommendation_box" name="query_recommendation" rows="3" class="form-control"></textarea>
+            </div>
+
+
+            <button class="btn btn-primary">
+              Add stop
+            </button>
+          </div>
+          
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -26,9 +26,9 @@ class StopsController < ApplicationController
 
     if the_stop.valid?
       the_stop.save
-      redirect_to("/stops", { :notice => "Stop created successfully." })
+      redirect_to("/crawls/#{the_stop.crawl_id}", { :notice => "Stop created successfully." })
     else
-      redirect_to("/stops", { :alert => the_stop.errors.full_messages.to_sentence })
+      redirect_to("/crawls/#{the_stop.crawl_id}", { :alert => the_stop.errors.full_messages.to_sentence })
     end
   end
 

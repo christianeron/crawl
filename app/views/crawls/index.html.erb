@@ -44,9 +44,9 @@
               <%= cl_image_tag(a_crawl.photo, class: "card-img-top",raw_transformation: "w_400,h_300,c_auto,g_auto") %>
             
               <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center border">
-                    <h5 class="card-title border"><%= a_crawl.name %></h5>
-                    <span class="badge rounded-pill text-bg-primary align-content-center border">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title align-self-center"><%= a_crawl.name %></h5>
+                    <span class="badge rounded-pill text-bg-primary align-self-center">
                     <% visits = a_crawl.visits%>
                     <% ratings = visits.pluck(:rating)%>
                     <% if ratings.sum == 0 %>
@@ -56,7 +56,7 @@
                     <% end %>
                     </span>
                 </div>
-                <p class="card-text">
+                <div class="card-text">
                   <div>
                     <%= a_crawl.city %>, <%= a_crawl.state %>
                   </div>
@@ -76,7 +76,7 @@
                       <%= a_experience.name %>
                     <% end %>
                   </div>
-                </p>
+                </div>
               </div>
               <ul class="list-group list-group-flush">
                 <% a_crawl.stops.order(:order_number).each_with_index do |a_stop, index|  %>

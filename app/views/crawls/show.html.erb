@@ -1,12 +1,15 @@
 <div class="row">
 
-  <div class="col-md-12">
+  <div class="col-md-12 d-flex justify-content-between">
     <h1><%= @the_crawl.name %></h1>
+    <% if @the_crawl.stops.count < 3 %>
+      <h1>Crawl needs at least 3 stops to become public</h1>
+    <% end %>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-4 d-flex flex-column">
+  <div class="col-md-6 d-flex flex-column">
     <div class="d-flex justify-content-between">
       <div>
       <h4><%= @the_crawl.city %>, <%= @the_crawl.state %></h4>
@@ -18,7 +21,7 @@
       </h4>
       </div>
       <div>
-        <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_150,h_150,c_auto,g_auto") %>
+        <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_200,h_200,c_auto,g_auto") %>
       </div>
     </div>
     <div class="mt-auto">
@@ -45,8 +48,8 @@
     </div>
   </div>
 
-  <div class="col-md-8 d-flex justify-content-center">
-    <div id="map" style='width: 600px; height: 300px;'></div>
+  <div class="col-md-6 d-flex justify-content-center">
+    <div id="map" style='width: 600px; height: 350px;'></div>
 
     <script>
       function initMap() {
@@ -116,7 +119,7 @@
           <h6><%= a_stop.recommendation %></h6>
         </div>
         <div class="card-body">
-          <% a_stop.visits.each do |a_visit| %>
+          <% a_stop.visits.order(:created_at => :desc).each do |a_visit| %>
             <div class="d-flex">
               <%= a_visit.user.username%>:
               <%= cl_image_tag(a_visit.photo, raw_transformation: "w_200,h_200,c_auto,g_auto") %>
@@ -126,7 +129,10 @@
             </div>
           <% end %>  
         </div>
+        <div class="d-flex justify-content-between">
+          <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">Add visit</a>
           <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">See all visits</a>
+        </div>
       </div>
     </div>
   <% end %>
@@ -267,7 +273,13 @@
         <form action="/insert_stop" method="post">
 
             <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
-            <input type="hidden" id="order_number_box" name="query_order_number" value="<%= @the_crawl.stops.pluck(:order_number).max() + 1%>">
+            <input type="hidden" id="order_number_box" name="query_order_number" value="<%= 1 +
+              if @the_crawl.stops.at(0) == nil
+                0
+              else
+                @the_crawl.stops.pluck(:order_number).max() 
+              end
+            %>">
 
             <div class="mb-3">
               <label for="location_id_box" class="form-label">

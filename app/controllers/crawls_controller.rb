@@ -1,10 +1,10 @@
 class CrawlsController < ApplicationController
 
   def index
-    matching_crawls = Crawl.all
+    all_crawls = Crawl.all
 
-    @list_of_crawls = matching_crawls.order({ :created_at => :desc })
-    
+    @list_of_crawls = Crawl.all.order({ :created_at => :desc })
+
     @categories = Category.all.order("name")
 
     render({ :template => "crawls/index" })
@@ -60,7 +60,7 @@ class CrawlsController < ApplicationController
 
     if the_crawl.valid?
       the_crawl.save
-      redirect_to("/crawls", { :notice => "Crawl created successfully." })
+      redirect_to("/crawls/#{the_crawl.id}", { :notice => "Crawl created successfully." })
     else
       redirect_to("/crawls", { :alert => the_crawl.errors.full_messages.to_sentence })
     end

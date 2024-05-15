@@ -99,5 +99,13 @@ class CrawlsController < ApplicationController
     render({ :template => "crawls/my_crawls" })
   end
 
+  def user_crawls
+    the_id = params.fetch("path_id")
+
+    @the_user = User.all.where(:id => the_id).at(0)
+
+    render({ :template => "crawls/user_crawls" })
+  end
+
 
 end

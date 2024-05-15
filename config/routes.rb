@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # Routes for current user
   get("/my_crawls", { :controller => "crawls", :action => "my_crawls" })
   
+  # Routes for current user
+  get("/user/:path_id", { :controller => "crawls", :action => "user_crawls" })
   
   # Routes for the Category resource:
 

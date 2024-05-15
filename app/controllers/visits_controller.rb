@@ -27,9 +27,9 @@ class VisitsController < ApplicationController
 
     if the_visit.valid?
       the_visit.save
-      redirect_to("/visits", { :notice => "Visit created successfully." })
+      redirect_to("/crawls/#{Stop.all.where(:id => the_visit.stop_id).at(0).crawl.id}", { :notice => "Visit created successfully." })
     else
-      redirect_to("/visits", { :alert => the_visit.errors.full_messages.to_sentence })
+      redirect_to("/crawls/#{Stop.all.where(:id => the_visit.stop_id).at(0).crawl.id}", { :alert => the_visit.errors.full_messages.to_sentence })
     end
   end
 

@@ -62,7 +62,7 @@
                       <%= a_crawl.city %>, <%= a_crawl.state %>
                     </div>
                     <div>
-                      by <%= a_crawl.user.username %>
+                      by <a href="/user/<%= a_crawl.user.id %>"><%= a_crawl.user.username %></a>
                     </div>
                     <div>
                       <% if a_crawl.stops.size > 0 %>
@@ -81,9 +81,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <% a_crawl.stops.order(:order_number).each_with_index do |a_stop, index|  %>
-                    <% if index <= 2 %>
+                    <% if index == 0 || index == 1 || index == 2 %>
                       <li class="list-group-item"><%= a_stop.location.name %></li>
-                    <% elsif index == 2 %>
+                    <% elsif index == 3 %>
                       <li class="list-group-item">
                         <a href="/crawls/<%= a_crawl.id%>">View all <%= a_crawl.stops.size%> stops</a>
                       </li>

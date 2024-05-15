@@ -130,7 +130,11 @@
           <% end %>  
         </div>
         <div class="d-flex justify-content-between">
-          <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">Add visit</a>
+          
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" data-stop-id="<%= a_stop.id%>">
+            Add visit
+          </button>
+
           <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">See all visits</a>
         </div>
       </div>
@@ -141,7 +145,6 @@
 <div class="mb-3">
   <hr>
 </div>
-
 
 
 <!-- Edit Crawl Modal -->
@@ -318,4 +321,67 @@
   </div>
 </div>
 
+<!-- New Visit Modal -->
+<div class="modal fade" id="newVisitModal" tabindex="-1" aria-labelledby="newVisitModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newVisitModalLabel">New visit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/insert_visit" method="post" enctype="multipart/form-data">
+          <div>
+            <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
+          </div>
 
+      <div class="mb-3">
+        <label for="stop_id_box" class="form-label">
+          Stop
+        </label>
+
+        <select id="stop_id_box" name="query_stop_id" class="form-control">
+          <% @the_crawl.stops.each do |a_stop| %>
+            <option value="<%= a_stop.id %>"><%= a_stop.crawl.name %> - Stop # <%= a_stop.order_number %> - <%= a_stop.location.name %> (<%= a_stop.location.city %>, <%= a_stop.location.state %>)</option>
+          <% end %>
+        </select>
+      </div>
+
+          <div class="mb-3">
+            <label for="rating_box" class="form-label">
+              Rating
+            </label>
+
+            <input type="text" id="rating_box" name="query_rating" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="caption_box" class="form-label">
+              Caption
+            </label>
+
+            <textarea id="caption_box" name="query_caption" rows="3" class="form-control"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="photo_box" class="form-label">
+              Photo
+            </label>
+
+            <input type="file" id="photo_box" name="query_photo" class="form-control">
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Create visit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-between">
       <div>
       <h4><%= @the_crawl.city %>, <%= @the_crawl.state %></h4>
-      <h4><%= @the_crawl.user.username %></h4>
+      <h4><a href="/user/<%= @the_crawl.user.id %>"><%= @the_crawl.user.username %></a></h4>
       <h4>
         <% @the_crawl.experiences.each do |a_experience| %>
           <%= a_experience.name %>
@@ -21,7 +21,7 @@
       </h4>
       </div>
       <div>
-        <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_200,h_200,c_auto,g_auto") %>
+        <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_300,h_225,c_auto,g_auto") %>
       </div>
     </div>
     <div class="mt-auto">
@@ -31,12 +31,16 @@
           Add stop
         </button>
 
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#rearrangeStopModal">
+          Rearrange stops
+        </button>
+
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTagModal">
           Add tag
         </button>
 
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editCrawlModal">
-          Edit crawl
+          Edit crawl details
         </button>
 
         <a href="/delete_crawl/<%= @the_crawl.id %>" class="btn btn-danger">
@@ -101,7 +105,7 @@
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
         
-  <% @the_crawl.stops.each_with_index do |a_stop, index| %>
+  <% @the_crawl.stops.order(:order_number).each_with_index do |a_stop, index| %>
     <div class="col">
       <div class="card text-bg-light mb-3 h-100">
         <div class="card-header"> 
@@ -117,25 +121,36 @@
             </span>
           </div>
           <h6><%= a_stop.recommendation %></h6>
-        </div>
-        <div class="card-body">
-          <% a_stop.visits.order(:created_at => :desc).each do |a_visit| %>
-            <div class="d-flex">
-              <%= a_visit.user.username%>:
-              <%= cl_image_tag(a_visit.photo, raw_transformation: "w_200,h_200,c_auto,g_auto") %>
-            </div>
-            <div>
-              <p class="card-text"><%= a_visit.caption %></p>
-            </div>
+          <% if current_user == @the_crawl.user %>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStopModal" data-stop-id="<%= a_stop.id%>">
+              Edit stop
+            </button>
+          <% else %>  
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" data-stop-id="<%= a_stop.id%>">
+              Add visit
+            </button>
           <% end %>  
         </div>
-        <div class="d-flex justify-content-between">
-          
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" data-stop-id="<%= a_stop.id%>">
-            Add visit
-          </button>
-
-          <a href="/stops/<%= a_stop.id %>" class="btn btn-primary">See all visits</a>
+        <div class="card-body">
+          <% all_visits= a_stop.visits.order(:created_at => :desc)%>
+          <% all_visits.each_with_index do |a_visit, index| %>
+            <% if index < 2 %>
+              <div>
+                <a href="/user/<%= a_visit.user.id %>"><%= a_visit.user.username%>:</a>
+              </div>
+              <div>
+                <%= cl_image_tag(a_visit.photo, raw_transformation: "w_300,h_225,c_auto,g_auto") %>
+              </div>
+              <div>
+                <p class="card-text"><%= a_visit.caption %></p>
+              </div>
+            <% end %>
+          <% end %>  
+        </div>
+        <div>
+          <% if all_visits.count > 2 %>
+            <a href="/stops/<%= a_stop.id %>" class="btn btn-outline-primary">See all visits</a>
+          <% end %>
         </div>
       </div>
     </div>
@@ -145,7 +160,6 @@
 <div class="mb-3">
   <hr>
 </div>
-
 
 <!-- Edit Crawl Modal -->
 <div class="modal fade" id="editCrawlModal" tabindex="-1" aria-labelledby="editCrawlModalLabel" aria-hidden="true">
@@ -311,6 +325,86 @@
             </button>
           </div>
           
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Stop Modal -->
+<div class="modal fade" id="editStopModal" tabindex="-1" aria-labelledby="editStopModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editStopModalLabel">New Stop</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/modify_stop"  method="post" >
+          <div>
+            <label for="stop_id_box" class="form-label">
+              Stop
+            </label>
+
+            <% user_crawls = Crawl.where(:user_id => current_user.id) %>
+            <select id="stop_id_box" name="query_stop_id" class="form-control">
+              <% @the_crawl.stops.each do |a_stop| %>
+                <option value="<%= a_stop.id %>"><%= a_stop.location.name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div>
+            <label for="recommendation_box" class="form-label">
+              Recommendation
+            </label>
+
+            <textarea id="recommendation_box" name="query_recommendation" class="form-control"></textarea>
+          </div>
+
+          <button class="btn btn-primary">
+            Update recommendation
+          </button>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Rearrange Stops Modal -->
+<div class="modal fade" id="rearrangeStopModal" tabindex="-1" aria-labelledby="rearrangeStopModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="rearrangeStopModalLabel">Rearrange stops</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/modify_stop_order/<%= @the_crawl.id %>"  method="post">
+          <% @the_crawl.stops.order(:order_number).each_with_index do |a_stop, index|%>
+
+            <div class="mb-3">
+              <label for="order_number_<%= index %>_box" class="form-label">
+                <%= a_stop.location.name %>
+              </label>
+
+              <input type="text" id="order_number_<%= index %>_box" name="query_order_number_<%= index %>" value="<%= a_stop.order_number %>" class="form-control">
+            </div>
+
+          <% end %>
+
+          <button class="btn btn-primary">
+            Update stop order
+          </button>
         </form>
       </div>
 

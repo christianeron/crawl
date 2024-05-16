@@ -150,7 +150,8 @@ Rails.application.routes.draw do
   
   # UPDATE
   
-  post("/modify_stop/:path_id", { :controller => "stops", :action => "update" })
+  post("/modify_stop", { :controller => "stops", :action => "update" })
+  post("/modify_stop_order/:path_id", { :controller => "stops", :action => "rearrange" })
   
   # DELETE
   get("/delete_stop/:path_id", { :controller => "stops", :action => "destroy" })

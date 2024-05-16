@@ -1,146 +1,207 @@
-<div>
-  <div>
-    <h1>
-      Stop #<%= @the_stop.id %> details
-    </h1>
-
-    <div>
-      <div>
-        <a href="/stops">
-          Go back
-        </a>
-      </div>
-
-      <% if current_user == @the_stop.crawl.user %>
-      <div>
-        <a href="/delete_stop/<%= @the_stop.id %>">
-          Delete stop
-        </a>
-      </div>
-      <% end %>
-    </div>
-
-    <dl>
-      <dt>
-        Crawl
-      </dt>
-      <dd>
-        <%= @the_stop.crawl_id %>
-      </dd>
-
-      <dt>
-        Order number
-      </dt>
-      <dd>
-        <%= @the_stop.order_number %>
-      </dd>
-
-      <dt>
-        Location
-      </dt>
-      <dd>
-        <%= @the_stop.location.name %> (<%= @the_stop.location.city %>, <%= @the_stop.location.state %>)
-      </dd>
-
-      <dt>
-        Recommendation
-      </dt>
-      <dd>
-        <%= @the_stop.recommendation %>
-      </dd>
-
-      <dt>
-        Rating
-      </dt>
-      <dd>
-          <% visits = @the_stop.visits%>
-          <% ratings = visits.pluck(:rating)%>
-          <% if ratings.sum == 0 %>
-            <%= "Not rated yet!" %>
-          <% else %>
-            <%= (ratings.sum / ratings.size.to_f).round(1) %>
-          <% end %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_stop.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_stop.updated_at) %> ago
-      </dd>
-    </dl>
+<div class="row mb-3">
+  <div class="col-md-12 d-flex">
+    <a href="/crawls/<%= @the_stop.crawl.id %>">Go back</a>
   </div>
 </div>
 
-<% if current_user == @the_stop.crawl.user %>
+<div class="row mb-1">
+  <div class="col-md-12 d-flex justify-content-between align-items-center">
+    <h1><%= @the_stop.crawl.name %> - Stop #<%= @the_stop.order_number %></h1>
+    <span class="badge rounded-pill text-bg-primary align-content-center h-50">
+      <% ratings = @the_stop.visits.pluck(:rating)%>
+      <% if ratings.sum == 0 %>
+        -
+      <% else %>
+        <%= (ratings.sum / ratings.size.to_f).round(1) %> <i class="fa-regular fa-star"></i>
+      <% end %>
+    </span>
+  </div>
+</div>
+
+<div class="row mb-1">
+  <div class="col-md-12 d-flex justify-content-between align-items-center">
+    <h2>
+      <%= @the_stop.location.name %>
+    </h2>
+    <% if current_user == @the_stop.crawl.user %>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStopModal">
+        Edit stop
+      </button>
+    <% else %>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" data-stop-id="<%= @the_stop.id%>">
+        Add visit
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<div class="row mb-1">
+  <div class="col-md-12 d-flex">
+    <p>
+      <%= @the_stop.recommendation %>
+    </p>
+  </div>
+</div>
+
 <hr>
 
 <div>
   <div>
-    <h2>
-      Edit stop
-    </h2>
+    <div>
 
-    <form action="/modify_stop/<%= @the_stop.id %>"  method="post" >
-      <div>
-        <label for="crawl_id_box">
-          Crawl
-        </label>
-
-        <% user_crawls = Crawl.where(:user_id => current_user.id) %>
-        <select id="crawl_id_box" name="query_crawl_id">
-          <% user_crawls.each do |a_crawl| %>
-            <option value="<%= a_crawl.id %>"><%= a_crawl.name %></option>
-          <% end %>
-        </select>
-
-      </div>
-
-      <div>
-        <label for="order_number_box">
-          Order number
-        </label>
-
-        <input type="text" id="order_number_box" name="query_order_number" value="<%= @the_stop.order_number %>">
-      </div>
-
-      <div>
-        <label for="location_id_box">
-          Location
-        </label>
-
-        <select id="location_id_box" name="query_location_id">
-          <% Location.all.each do |a_location| %>
-            <% if a_location.id == @the_stop.location_id %>
-            <option value="<%= a_location.id %>" selected><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
-            <% else %>
-            <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
-            <% end %>
-          <% end %>
-        </select>
-
-      </div>
-
-      <div>
-        <label for="recommendation_box">
-          Recommendation
-        </label>
-
-        <textarea id="recommendation_box" name="query_recommendation"><%= @the_stop.recommendation %></textarea>
-      </div>
-
-      <button>
-        Update stop
-      </button>
-    </form>
+      <% if current_user == @the_stop.crawl.user %>
+        <div>
+          <a href="/delete_stop/<%= @the_stop.id %>" class="btn btn-danger">
+            Delete stop
+          </a>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+
+  <% @the_stop.visits.order(:created_at => :desc).each_with_index do |a_visit, index| %>
+    <div class="col">
+      <div class="card text-bg-light mb-3 h-100">
+
+        <%= cl_image_tag(a_visit.photo, class: "card-img-top",raw_transformation: "w_400,h_300,c_auto,g_auto") %>
+
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><%= a_visit.user.username %></h5>
+            <span class="badge rounded-pill text-bg-primary align-content-center">
+              <%= a_visit.rating%> <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+          <div>
+            Updated on <%= @the_stop.updated_at.strftime("%b %d, %Y") %>
+          </div>
+          
+          <% if current_user == a_visit.user %>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editVisitModal" data-stop-id="<%= a_visit.id%>">
+              Edit visit
+            </button>
+          <% else %>
+
+          <% end %>
+        </div>
+        <div class="card-body">
+          <p><%= a_visit.caption %><p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="mb-3">
+  <hr>
+</div>
+
+<!-- Edit Stop Modal -->
+<div class="modal fade" id="editStopModal" tabindex="-1" aria-labelledby="editStopModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editStopModalLabel">Edit Stop</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/modify_stop/<%= @the_stop.id %>"  method="post" >
+          
+          <input type="hidden" id="stop_id_box" name="query_stop_id" value="<%= @the_stop.id %>">
+
+          <div class="mb-3">
+            <label for="recommendation_box" class="form-label">
+              Recommendation
+            </label>
+            <textarea id="recommendation_box" name="query_recommendation" class="form-control"><%= @the_stop.recommendation %></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Update stop
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<% if current_user == @the_stop.crawl.user %>
+  <hr>
+
+  <div>
+    <div>
+      <h2>
+        Edit stop
+      </h2>
+
+      <form action="/modify_stop/<%= @the_stop.id %>"  method="post" >
+        <div class="mb-3">
+          <label for="crawl_id_box" class="form-label">
+            Crawl
+          </label>
+
+          <% user_crawls = Crawl.where(:user_id => current_user.id) %>
+          <select id="crawl_id_box" name="query_crawl_id" class="form-control">
+            <% user_crawls.each do |a_crawl| %>
+              <option value="<%= a_crawl.id %>"><%= a_crawl.name %></option>
+            <% end %>
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="order_number_box" class="form-label">
+            Order number
+          </label>
+
+          <input type="text" id="order_number_box" name="query_order_number" value="<%= @the_stop.order_number %>" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="location_id_box" class="form-label">
+            Location
+          </label>
+
+          <select id="location_id_box" name="query_location_id" class="form-control">
+            <% Location.all.each do |a_location| %>
+              <% if a_location.id == @the_stop.location_id %>
+                <option value="<%= a_location.id %>" selected><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+              <% else %>
+                <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+              <% end %>
+            <% end %>
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="recommendation_box" class="form-label">
+            Recommendation
+          </label>
+
+          <textarea id="recommendation_box" name="query_recommendation" class="form-control"><%= @the_stop.recommendation %></textarea>
+        </div>
+
+        <button>
+          Update stop
+        </button>
+      </form>
+    </div>
+  </div>
 
 <% end %>

@@ -12,13 +12,13 @@
   <div class="col-md-6 d-flex flex-column">
     <div class="d-flex justify-content-between">
       <div>
-      <h4><%= @the_crawl.city %>, <%= @the_crawl.state %></h4>
-      <h4><a href="/user/<%= @the_crawl.user.id %>"><%= @the_crawl.user.username %></a></h4>
-      <h4>
-        <% @the_crawl.experiences.each do |a_experience| %>
-          <%= a_experience.name %>
-        <% end %>
-      </h4>
+        <h4><%= @the_crawl.city %>, <%= @the_crawl.state %></h4>
+        <h4><a href="/user/<%= @the_crawl.user.id %>"><%= @the_crawl.user.username %></a></h4>
+        <h4>
+          <% @the_crawl.experiences.each do |a_experience| %>
+            <%= a_experience.name %>
+          <% end %>
+        </h4>
       </div>
       <div>
         <%= cl_image_tag(@the_crawl.photo, raw_transformation: "w_300,h_225,c_auto,g_auto") %>
@@ -26,27 +26,27 @@
     </div>
     <div class="mt-auto">
       <% if current_user == @the_crawl.user %>
-      <div class= "d-flex justify-content-between">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStopModal">
-          Add stop
-        </button>
+        <div class= "d-flex justify-content-between">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStopModal">
+            Add stop
+          </button>
 
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#rearrangeStopModal">
-          Rearrange stops
-        </button>
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#rearrangeStopModal">
+            Rearrange stops
+          </button>
 
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTagModal">
-          Add tag
-        </button>
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTagModal">
+            Add tag
+          </button>
 
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editCrawlModal">
-          Edit crawl details
-        </button>
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editCrawlModal">
+            Edit crawl details
+          </button>
 
-        <a href="/delete_crawl/<%= @the_crawl.id %>" class="btn btn-danger">
-          Delete crawl
-        </a>
-      </div>
+          <a href="/delete_crawl/<%= @the_crawl.id %>" class="btn btn-danger">
+            Delete crawl
+          </a>
+        </div>
 
       <% end %>
     </div>
@@ -63,22 +63,22 @@
 
         // An empty bounds variable for seeding automatic zoom level (bounds of map)
         var bounds = new google.maps.LatLngBounds();
-        
+
         <% @stop_locations.each do |a_stop| %>
 
         // Make an info window for this place
         var infowindow_<%= a_stop.fetch(:num) %> = new google.maps.InfoWindow({
           content: "<b><%= a_stop.fetch(:name) %></b>"
         });
-        
+
         // Make marker for this place
         var marker_<%= a_stop.fetch(:num) %> = new google.maps.Marker({
-          position: {lat: <%= a_stop.fetch(:lat) %>, lng: <%= a_stop.fetch(:lng) %>}, 
+          position: {lat: <%= a_stop.fetch(:lat) %>, lng: <%= a_stop.fetch(:lng) %>},
           map: map,
           title: "<%= a_stop.fetch(:name) %>",
           label: "<%= a_stop.fetch(:num) %>"
         });
-        
+
         // Click to show info window
         marker_<%= a_stop.fetch(:num) %>.addListener('click', function() {
           infowindow_<%= a_stop.fetch(:num) %>.open(map, marker_<%= a_stop.fetch(:num) %>);
@@ -91,7 +91,6 @@
 
         map.fitBounds(bounds);
       };
-      
     </script>
     <script src= <%= @map_call %>
     async defer></script>
@@ -104,11 +103,11 @@
 </div>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-        
+
   <% @the_crawl.stops.order(:order_number).each_with_index do |a_stop, index| %>
     <div class="col">
       <div class="card text-bg-light mb-3 h-100">
-        <div class="card-header"> 
+        <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
             <h5>Stop #<%= index + 1%>: <%= a_stop.location.name %></h5>
             <span class="badge rounded-pill text-bg-primary align-content-center">
@@ -116,7 +115,7 @@
               <% if ratings.sum == 0 %>
                 -
               <% else %>
-                <%= (ratings.sum / ratings.size.to_f).round(1) %>
+                <%= (ratings.sum / ratings.size.to_f).round(1) %> <i class="fa-regular fa-star"></i>
               <% end %>
             </span>
           </div>
@@ -125,11 +124,11 @@
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStopModal" data-stop-id="<%= a_stop.id%>">
               Edit stop
             </button>
-          <% else %>  
+          <% else %>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" data-stop-id="<%= a_stop.id%>">
               Add visit
             </button>
-          <% end %>  
+          <% end %>
         </div>
         <div class="card-body">
           <% all_visits= a_stop.visits.order(:created_at => :desc)%>
@@ -145,7 +144,7 @@
                 <p class="card-text"><%= a_visit.caption %></p>
               </div>
             <% end %>
-          <% end %>  
+          <% end %>
         </div>
         <div>
           <% if all_visits.count > 2 %>
@@ -227,7 +226,7 @@
               Edit crawl
             </button>
           </div>
-          
+
         </form>
       </div>
 
@@ -263,11 +262,11 @@
           <div>
             <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
           </div>
+          <div class="d-grid">
             <button class="btn btn-primary">
               Add tag
             </button>
           </div>
-          
         </form>
       </div>
 
@@ -277,6 +276,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- New Stop Modal -->
 <div class="modal fade" id="addStopModal" tabindex="-1" aria-labelledby="addStopModalLabel" aria-hidden="true">
@@ -289,8 +289,8 @@
       <div class="modal-body">
         <form action="/insert_stop" method="post">
 
-            <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
-            <input type="hidden" id="order_number_box" name="query_order_number" value="<%= 1 +
+          <input type="hidden" id="crawl_id_box" name="query_crawl_id" value="<%= @the_crawl.id %>">
+          <input type="hidden" id="order_number_box" name="query_order_number" value="<%= 1 +
               if @the_crawl.stops.at(0) == nil
                 0
               else
@@ -298,33 +298,32 @@
               end
             %>">
 
-            <div class="mb-3">
-              <label for="location_id_box" class="form-label">
-                Location
-              </label>
+          <div class="mb-3">
+            <label for="location_id_box" class="form-label">
+              Location
+            </label>
 
-              <select id="location_id_box" name="query_location_id" class="form-control">
-                <% Location.all.each do |a_location| %>
-                  <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
-                <% end %>
-              </select>
+            <select id="location_id_box" name="query_location_id" class="form-control">
+              <% Location.all.each do |a_location| %>
+                <option value="<%= a_location.id %>"><%= a_location.name %> (<%= a_location.city %>, <%= a_location.state %>)</option>
+              <% end %>
+            </select>
 
-            </div>
+          </div>
 
-            <div class="mb-3">
-              <label for="recommendation_box" class="form-label">
-                Recommendation
-              </label>
+          <div class="mb-3">
+            <label for="recommendation_box" class="form-label">
+              Recommendation
+            </label>
 
-              <textarea id="recommendation_box" name="query_recommendation" rows="3" class="form-control"></textarea>
-            </div>
+            <textarea id="recommendation_box" name="query_recommendation" rows="3" class="form-control"></textarea>
+          </div>
 
-
+          <div class="d-grid">
             <button class="btn btn-primary">
               Add stop
             </button>
           </div>
-          
         </form>
       </div>
 
@@ -334,6 +333,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Edit Stop Modal -->
 <div class="modal fade" id="editStopModal" tabindex="-1" aria-labelledby="editStopModalLabel" aria-hidden="true">
@@ -366,9 +366,11 @@
             <textarea id="recommendation_box" name="query_recommendation" class="form-control"></textarea>
           </div>
 
-          <button class="btn btn-primary">
-            Update recommendation
-          </button>
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Update recommendation
+            </button>
+          </div>
         </form>
       </div>
 
@@ -378,7 +380,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Rearrange Stops Modal -->
 <div class="modal fade" id="rearrangeStopModal" tabindex="-1" aria-labelledby="rearrangeStopModalLabel" aria-hidden="true">
@@ -401,10 +402,11 @@
             </div>
 
           <% end %>
-
-          <button class="btn btn-primary">
-            Update stop order
-          </button>
+          <div class="d-grid">
+            <button class="btn btn-primary">
+              Update stop order
+            </button>
+          </div>
         </form>
       </div>
 
@@ -429,21 +431,21 @@
             <input type="hidden" id="user_id_box" name="query_user_id" value=<%= current_user.id %>>
           </div>
 
-      <div class="mb-3">
-        <label for="stop_id_box" class="form-label">
-          Stop
-        </label>
+          <div class="mb-3">
+            <label for="stop_id_box" class="form-label">
+              Stop
+            </label>
 
-        <select id="stop_id_box" name="query_stop_id" class="form-control">
-          <% @the_crawl.stops.each do |a_stop| %>
-            <option value="<%= a_stop.id %>"><%= a_stop.crawl.name %> - Stop # <%= a_stop.order_number %> - <%= a_stop.location.name %> (<%= a_stop.location.city %>, <%= a_stop.location.state %>)</option>
-          <% end %>
-        </select>
-      </div>
+            <select id="stop_id_box" name="query_stop_id" class="form-control">
+              <% @the_crawl.stops.each do |a_stop| %>
+                <option value="<%= a_stop.id %>"><%= a_stop.crawl.name %> - Stop # <%= a_stop.order_number %> - <%= a_stop.location.name %> (<%= a_stop.location.city %>, <%= a_stop.location.state %>)</option>
+              <% end %>
+            </select>
+          </div>
 
           <div class="mb-3">
             <label for="rating_box" class="form-label">
-              Rating
+              Rating (1-5 <i class="fa-regular fa-star"></i>)
             </label>
 
             <input type="text" id="rating_box" name="query_rating" class="form-control">
